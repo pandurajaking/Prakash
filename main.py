@@ -801,7 +801,7 @@ async def account_login(bot: Client, m: Message):
     except Exception as e:
         await m.reply_text(str(e))
     await m.reply_text("Done")
-@bot.on_message(filters.command(["pro_jw"])&   (filters.chat(sudo_groups)))
+@bot.on_message(filters.command(["jw"])&   (filters.chat(sudo_groups)))
 async def account_login(bot: Client, m: Message):
     editable = await m.reply_text("Send txt file**")
     input: Message = await bot.listen(editable.chat.id)
