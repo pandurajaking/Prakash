@@ -896,9 +896,9 @@ async def account_login(bot: Client, m: Message):
                     'region'         : 'IN',
                     'user-agent'     : 'Mobile-Android',
                     'webengage-luid' : '00000187-6fe4-5d41-a530-26186858be4c'
-    }
+                }    
 
-    api = 'https://api.classplusapp.com/v2' 
+     
 
                 params = (('url', f'{url}'), )
 
