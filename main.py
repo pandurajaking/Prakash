@@ -869,17 +869,20 @@ async def account_login(bot: Client, m: Message):
             name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@","").replace("*","").replace(".","").strip()
             
             if "cpcdn" in url:
-                list01 = url.split("/")
-                list01[-1] = "stream_1/stream.m3u8"
-                url1 = "/".join(list01)
+                if "playlist" in url:
+                    url1 = url.replace("playlist", "360p")
+                else:
+                    list01 = url.split("/")
+                    list01[-1] = "stream_2/stream.m3u8"
+                    url1 = "/".join(list01)
             elif "videos" in url:
                 list01 = url.replace(".m3u8" , "").split("/")
                 last01 = list01.pop()
                 if len(list01[-1])>8:
-                    last02 = "video/" + last01 + "-9cd8875b46b06280daebef189d795873-video-fd.m3u8"
+                    last02 = "video/" + last01 + "-49aced368452fa67022235a5c4b7055c-video-fd.m3u8"
                     list01.append(last02)
                 else:
-                    last02 = "videos/" + last01 + "-33948330.mp4.m3u8"
+                    last02 = "videos/" + last01 + "-33948335.mp4.m3u8"
                     list01.append(last02)
                 url1 = "/".join(list01)
                 
@@ -895,7 +898,7 @@ async def account_login(bot: Client, m: Message):
             if "pdf" in url:
                 cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
             else:
-                cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv "{url1}"'
+                cmd = f'yt-dlp --no-check-certificates -o "{name}.mp4" --no-keep-video --remux-video mkv "{url1}"'
             try:
                 download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
                 os.system(download_cmd)
@@ -937,7 +940,8 @@ async def account_login(bot: Client, m: Message):
                 continue 
     except Exception as e:
         await m.reply_text(e)
-    await m.reply_text("Done")     
+    await m.reply_text("Done")
+                
     
         
 
