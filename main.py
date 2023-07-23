@@ -805,21 +805,14 @@ async def account_login(bot: Client, m: Message):
 
 @bot.on_message(filters.command(["pro_jw"]))
 async def account_login(bot: Client, m: Message):
-    user = m.from_user.id if m.from_user is not None else None
-    if user is not None and user not in sudo_users:
-        await m.reply("**TUM BHOSADI WALE NIKKAL LO**", quote=True)
-        return
-    else:
-        editable = await m.reply_text(
-            "Hello Bruh **I am jw Downloader Bot**. I can download videos from **text** file one by one.**\n\nLanguage** : Python**\nFramework** :Pyrogram\n\nSend **TXT** File {Name : Link}"
-       ,reply_markup=keyboard)
+    editable = await m.reply_text("Send txt file**")
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
     await input.delete(True)
 
     path = f"./downloads/{m.chat.id}"
 
-    try:
+    try:    
         with open(x, "r") as f:
             content = f.read()
         content = content.split("\n")
@@ -833,28 +826,26 @@ async def account_login(bot: Client, m: Message):
         os.remove(x)
         return
 
-    editable = await m.reply_text(
-        f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**"
-    )
+    editable = await m.reply_text(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**")
     input1: Message = await bot.listen(editable.chat.id)
     raw_text = input1.text
+
 
     try:
         arg = int(raw_text)
     except:
         arg = 0
-
+    
+    
     editable = await m.reply_text("**Enter Title**")
     input0: Message = await bot.listen(editable.chat.id)
     raw_text0 = input0.text
-
+    
     await m.reply_text("**Enter resolution**")
     input2: Message = await bot.listen(editable.chat.id)
     raw_text2 = input2.text
 
-    editable4 = await m.reply_text(
-        "Now send the **Thumb url**\nEg : ```https://telegra.ph/file/d9e24878bd4aba05049a1.jpg```\n\nor Send **no**"
-    )
+    editable4= await m.reply_text("Now send the **Thumb url**\nEg : ```https://telegra.ph/file/d9e24878bd4aba05049a1.jpg```\n\nor Send **no**")
     input6 = message = await bot.listen(editable.chat.id)
     raw_text6 = input6.text
 
@@ -864,65 +855,43 @@ async def account_login(bot: Client, m: Message):
         thumb = "thumb.jpg"
     else:
         thumb == "no"
+        
+    if raw_text =='0':
+        count =1
+    else:       
+        count =int(raw_text)    
 
-    if raw_text == '0':
-        count = 1
-    else:
-        count = int(raw_text)
-
+    
     try:
         for i in range(arg, len(links)):
-
+            
             url = links[i][1]
-            name1 = links[i][0].replace("\t", "").replace(":", "").replace(
-                "/",
-                "").replace("+", "").replace("#", "").replace("|", "").replace(
-                    "@", "").replace("*", "").replace(".", "").strip()
-
-            if "jwplayer" in url:
-                headers = {
-                    'Host': 'api.classplusapp.com',
-                    'x-access-token':
-                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MzgzNjkyMTIsIm9yZ0lkIjoyNjA1LCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTcwODI3NzQyODkiLCJuYW1lIjoiQWNlIiwiZW1haWwiOm51bGwsImlzRmlyc3RMb2dpbiI6dHJ1ZSwiZGVmYXVsdExhbmd1YWdlIjpudWxsLCJjb3VudHJ5Q29kZSI6IklOIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJpYXQiOjE2NDMyODE4NzcsImV4cCI6MTY0Mzg4NjY3N30.hM33P2ai6ivdzxPPfm01LAd4JWv-vnrSxGXqvCirCSpUfhhofpeqyeHPxtstXwe0',
-                    'user-agent': 'Mobile-Android',
-                    'app-version': '1.4.39.5',
-                    'api-version': '20',
-                    'device-id': '5d0d17ac8b3c9f51',
-                    'device-details':
-                    '2848b866799971ca_2848b8667a33216c_SDK-30',
-                    'accept-encoding': 'gzip',
-                }
-
-                params = (('url', f'{url}'), )
-
-                response = requests.get(
-                    'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
-                    headers=headers,
-                    params=params)
-                # print(response.json())
-                a = response.json()['url']
-                # print(a)
-
-                headers1 = {
-                    'User-Agent':
-                    'ExoPlayerDemo/1.4.37.1 (Linux;Android 11) ExoPlayerLib/2.14.1',
-                    'Accept-Encoding': 'gzip',
-                    'Host': 'cdn.jwplayer.com',
-                    'Connection': 'Keep-Alive',
-                }
-
-                response1 = requests.get(f'{a}', headers=headers1)
-
-                url1 = (response1.text).split("\n")[2]
-
+            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@","").replace("*","").replace(".","").strip()
+            
+            if "cpcdn" in url:
+                list01 = url.split("/")
+                list01[-1] = "stream_1/stream.m3u8"
+                url1 = "/".join(list01)
+            elif "videos" in url:
+                list01 = url.replace(".m3u8" , "").split("/")
+                last01 = list01.pop()
+                if len(list01[-1])>8:
+                    last02 = "video/" + last01 + "-9cd8875b46b06280daebef189d795873-video-fd.m3u8"
+                    list01.append(last02)
+                else:
+                    last02 = "videos/" + last01 + "-33948330.mp4.m3u8"
+                    list01.append(last02)
+                url1 = "/".join(list01)
+                
 #                 url1 = b
             else:
                 url1 = url
 
-            name = f'{str(count).zfill(3)}) {name1}'
+                
+            name = f'{str(count).zfill(3)}) {name1}'    
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
-            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- Group Admin'
+            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}'
             if "pdf" in url:
                 cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
             else:
@@ -930,20 +899,17 @@ async def account_login(bot: Client, m: Message):
             try:
                 download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
                 os.system(download_cmd)
+                
 
                 if os.path.isfile(f"{name}.mkv"):
                     filename = f"{name}.mkv"
                 elif os.path.isfile(f"{name}.mp4"):
-                    filename = f"{name}.mp4"
+                    filename = f"{name}.mp4"  
                 elif os.path.isfile(f"{name}.pdf"):
-                    filename = f"{name}.pdf"
-
-
+                    filename = f"{name}.pdf"  
 #                 filename = f"{name}.mkv"
-                subprocess.run(
-                    f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
-                    shell=True)
-                await prog.delete(True)
+                subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
+                await prog.delete (True)
                 reply = await m.reply_text(f"Uploading - ```{name}```")
                 try:
                     if thumb == "no":
@@ -957,32 +923,23 @@ async def account_login(bot: Client, m: Message):
 
                 start_time = time.time()
                 if "pdf" in url1:
-                    await m.reply_document(filename, caption=cc)
+                    await m.reply_document(filename,caption=cc)
                 else:
-                    await m.reply_video(filename,
-                                        supports_streaming=True,
-                                        height=720,
-                                        width=1280,
-                                        caption=cc,
-                                        duration=dur,
-                                        thumb=thumbnail,
-                                        progress=progress_bar,
-                                        progress_args=(reply, start_time))
-                count += 1
+                    await m.reply_video(filename,supports_streaming=True,height=720,width=1280,caption=cc,duration=dur,thumb=thumbnail, progress=progress_bar,progress_args=(reply,start_time) )
+                count+=1
                 os.remove(filename)
 
                 os.remove(f"{filename}.jpg")
-                await reply.delete(True)
+                await reply.delete (True)
                 time.sleep(1)
             except Exception as e:
-                await m.reply_text(
-                    f"**downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
-                )
-                continue
+                await m.reply_text(f"**downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`")
+                continue 
     except Exception as e:
         await m.reply_text(e)
-    await m.reply_text("Done")
-
+    await m.reply_text("Done")     
+    
+        
 
 @bot.on_message(filters.command(["top"]))
 async def account_login(bot: Client, m: Message):
