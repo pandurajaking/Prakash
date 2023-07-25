@@ -950,8 +950,8 @@ async def account_login(bot: Client, m: Message):
                 else:
                     await m.reply_video(filename,
                                         supports_streaming=True,
-                                        height=480,
-                                        width=853,
+                                        height=270,
+                                        width=480,
                                         caption=cc,
                                         duration=dur,
                                         thumb=thumbnail,
