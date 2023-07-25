@@ -907,7 +907,7 @@ async def account_login(bot: Client, m: Message):
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
-            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- Group Admin'
+            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
             if "pdf" in url:
                 cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
             else:
@@ -941,11 +941,11 @@ async def account_login(bot: Client, m: Message):
                 dur = int(helper.duration(filename))
 
                 start_time = time.time()
-                if "pdf" in url1:
+                if ".pdf" in url1:
                     await m.reply_document(filename, caption=cc)
                 else:
                     await m.reply_video(filename,
-                                        supports_streaming=True,
+                                        supports_streaming=False,
                                         height=480,
                                         width=854,
                                         caption=cc,
