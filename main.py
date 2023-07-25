@@ -941,13 +941,13 @@ async def account_login(bot: Client, m: Message):
                 dur = int(helper.duration(filename))
 
                 start_time = time.time()
-                if ".pdf" in url1:
+                if "cdn-wl-assets.classplus" in url1:
                     await m.reply_document(filename, caption=cc)
                 else:
                     await m.reply_video(filename,
-                                        supports_streaming=False,
-                                        height=480,
-                                        width=854,
+                                        supports_streaming=True,
+                                        height=480,360,720
+                                        width=854,640,1280
                                         caption=cc,
                                         duration=dur,
                                         thumb=thumbnail,
