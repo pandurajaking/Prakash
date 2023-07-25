@@ -852,9 +852,10 @@ async def account_login(bot: Client, m: Message):
     input0: Message = await bot.listen(editable.chat.id)
     raw_text0 = input0.text
 
-    await m.reply_text("**Enter resolution**")
+    await m.reply_text("Enter the desired resolution for the video (e.g., 1920*1080):")
+
     input2: Message = await bot.listen(editable.chat.id)
-    raw_text2 = input2.text
+    raw_text2 = input2.text.strip()
 
     editable4 = await m.reply_text(
         "Now send the **Thumb url**\nEg : ```https://telegra.ph/file/d9e24878bd4aba05049a1.jpg```\n\nor Send **no**"
@@ -915,7 +916,8 @@ async def account_login(bot: Client, m: Message):
             if "pdf" in url:
                 cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
             else:
-                cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv "{url1}"'
+                cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv --format "bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]" "{url1}"'
+
             try:
                 download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
                 os.system(download_cmd)
