@@ -58,7 +58,7 @@ bot = Client("bot",
              bot_token=os.environ.get("BOT_TOKEN"),
              api_id=int(os.environ.get("API_ID")),
              api_hash=os.environ.get("API_HASH"))
-auth_users = [5934830127]
+auth_users = [5934830127,1085174050]
 sudo_users = auth_users
 sudo_groups = [-1001663303433]
 
@@ -946,8 +946,8 @@ async def account_login(bot: Client, m: Message):
                 else:
                     await m.reply_video(filename,
                                         supports_streaming=True,
-                                        height=360,480,720,
-                                        width=640,854,1280,
+                                        height=360,
+                                        width=640,
                                         caption=cc,
                                         duration=dur,
                                         thumb=thumbnail,
