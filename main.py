@@ -941,7 +941,7 @@ async def account_login(bot: Client, m: Message):
                 dur = int(helper.duration(filename))
 
                 start_time = time.time()
-                if "cdn-wl-assets.classplus" in url1:
+                if "cdn-wl-assets.classplus" in url:
                     await m.reply_document(filename, caption=cc)
                 else:
                     await m.reply_video(filename,
