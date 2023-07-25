@@ -152,7 +152,7 @@ async def account_login(bot: Client, m: Message):
         return
     else:
         editable = await m.reply_text(
-            "Hello Bruh **I am Text Downloader Bot**. I can download videos from **text** file one by one.**\n\nDeveloper** : उससे क्या होगा काम से काम रखो 😂 @Adrenalinators**\nLanguage** : Python**\nFramework** : Pyrogram\n\nSend **TXT** File {Name : Link}")
+            "Hello @Prakash_Baraiya **I am Text Downloader Bot**. I can download videos from **text** file one by one.**\n\nDeveloper** : उससे क्या होगा काम से काम रखो 😂 @Adrenalinators**\nLanguage** : Python**\nFramework** : Pyrogram\n\nSend **TXT** File {Name : Link}")
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
     await input.delete(True)
@@ -815,7 +815,7 @@ async def account_login(bot: Client, m: Message):
         return
     else:
         editable = await m.reply_text(
-            "Hello Bruh **I am jw Downloader Bot**. I can download videos from **text** file one by one.**\n\nLanguage** : Python**\nFramework** :Pyrogram\n\nSend **TXT** File {Name : Link}"
+            "Hello @Prakash_Baraiya **I am jw Downloader Bot**. I can download videos from **text** file one by one.**\n\nLanguage** : Python**\nFramework** :Pyrogram\n\nSend **TXT** File {Name : Link}"
        ,reply_markup=keyboard)
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
@@ -911,7 +911,7 @@ async def account_login(bot: Client, m: Message):
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
-            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- Group Admin'
+            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
             if "pdf" in url:
                 cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
             else:
