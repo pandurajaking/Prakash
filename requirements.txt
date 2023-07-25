@@ -13,3 +13,4 @@ humanize
 cryptg
 telethon
 python-decouple
+hachoir
