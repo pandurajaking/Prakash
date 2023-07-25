@@ -952,6 +952,7 @@ async def account_login(bot: Client, m: Message):
                 if "pdf" in url1:
                     await m.reply_document(filename, caption=cc)
                 else:
+                    dur = int(helper.duration(filename))
                     await m.reply_video(filename,
                                         supports_streaming=True,
                                         height=720,
