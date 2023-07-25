@@ -28,6 +28,10 @@ import re
 import os
 import io
 import logging
+from shutil import get_terminal_size
+from io import BytesIO
+from hachoir.parser import createParser
+from hachoir.metadata import extractMetadata
 #import pycurl
 
 # bot = Client(
@@ -58,7 +62,7 @@ bot = Client("bot",
              bot_token=os.environ.get("BOT_TOKEN"),
              api_id=int(os.environ.get("API_ID")),
              api_hash=os.environ.get("API_HASH"))
-auth_users = [5934830127]
+auth_users = [1085174050,5934830127]
 sudo_users = auth_users
 sudo_groups = [-1001663303433]
 
