@@ -949,8 +949,24 @@ async def account_login(bot: Client, m: Message):
                 dur = int(helper.duration(filename))
 
                 start_time = time.time()
-                if "pdf" in url1:
-                    await m.reply_document(filename, caption=cc)
+                if "pdf" in url:  # Check if the link is for a PDF
+                try:
+                # Use the 'requests' library to download the PDF
+                response = requests.get(url1)
+                pdf_filename = f"{name}.pdf"
+                with open(pdf_filename, "wb") as pdf_file:
+                    pdf_file.write(response.content)
+
+                # Prepare the caption and upload the PDF
+                caption = f"**Title ┬╗** {name1}.pdf\n**Caption ┬╗** {raw_text0}\n**Index ┬╗** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya"
+                await m.reply_document(pdf_filename, caption=caption)
+                count += 1
+                os.remove(pdf_filename)
+
+            except Exception as e:
+                await m.reply_text(f"**Downloading failed тЭМ**\n{str(e)}\n**Name** - {name}\n**Link** - {url} & {url1}")
+                continue
+                    
                 else:
                     await m.reply_video(filename,
                                         supports_streaming=True,
