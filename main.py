@@ -922,17 +922,15 @@ async def account_login(bot: Client, m: Message):
                    os.system(cmd)
                    await prog.delete(True)
                    reply = await m.reply_text(f"Uploading - ```{name}.pdf```")
-                   cc = f'**Title ┬╗** {name1}.pdf\n**Caption ┬╗** {raw_text0}\n**Index ┬╗** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
+                   cc = f'**Title  ┬╗** {name1}.pdf\n**Caption ┬╗** {raw_text0}\n**Index ┬╗** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
                    await m.reply_document(f"{name}.pdf", caption=cc)
                    count += 1
                    os.remove(f"{name}.pdf")
                    await reply.delete(True)
                    time.sleep(1)
-                except Exception as e:
-                    await m.reply_text(
-                        f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - {url}"
-                    )
-                    continue
+                
+                   )
+                   continue
             else:
                 cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv --format "bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]" "{url1}"'
 
@@ -1131,37 +1129,7 @@ async def account_login(bot: Client, m: Message):
     except Exception as e:
         await m.reply_text(str(e))
     await m.reply_text("Done") 
-@bot.on_message(filters.command(["pro_download"]))
-async def download_pdf(bot: Client, m: Message):
-    # Similar setup as the previous command, checking user authorization, etc.
 
-    # Replace the existing code block for downloading videos with a new one
-    try:
-        for i in range(arg, len(links)):
-            url = links[i][1]
-            name = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").strip()
-
-            if ".pdf" in url:
-                # Download PDF files using requests or any suitable library
-                response = requests.get(url)
-                if response.status_code == 200:
-                    # Save the PDF file
-                    with open(f"{path}/{name}.pdf", "wb") as f:
-                        f.write(response.content)
-
-                    # Proceed to upload the PDF to Telegram
-                    await m.reply_document(f"{path}/{name}.pdf", caption="Your caption here")
-                    os.remove(f"{path}/{name}.pdf")  # Remove the downloaded file after upload
-
-            else:
-                # Handle other types of links (if needed)
-                # For example, you can add video downloading logic here
-                pass
-    except Exception as e:
-        await m.reply_text(f"Downloading failed: {str(e)}")
-
-    await m.reply_text("Done")
-    
     
  
     
