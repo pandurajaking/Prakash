@@ -33,6 +33,8 @@ from io import BytesIO
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
 #import pycurl
+import wget
+
 
 # bot = Client(
 #     "bot",
