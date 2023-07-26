@@ -21,9 +21,9 @@ import aiohttp
 import asyncio
 import aiofiles
 from pyrogram.types import User, Message
-# import progressor
-# from progressor import progress_for_pyrogram
-#import sys
+import progressor
+from progressor import progress_for_pyrogram
+import sys
 import re
 import os
 import io
@@ -32,7 +32,7 @@ from shutil import get_terminal_size
 from io import BytesIO
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
-#import pycurl
+import pycurl
 import wget
 
 
@@ -959,10 +959,8 @@ async def account_login(bot: Client, m: Message):
                     if response.status_code == 200:
                         with open(f"{name}.pdf", "wb") as pdf_file:
                             pdf_file.write(response.content)
-                else:
-                    await m.reply_text(f"Failed to download PDF: {url}")
-                    continue
-                else:
+                
+                 else:
                     await m.reply_video(filename,
                                         supports_streaming=True,
                                         height=720,
