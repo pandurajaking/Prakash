@@ -934,7 +934,7 @@ async def account_login(bot: Client, m: Message):
                 is_pdf = filename.lower().endswith(".pdf")
 
                 # Generate the thumbnail only if it's not a PDF
-                if not i
+                if not is_pdf:
                     subprocess.run(
                         f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
                         shell=True)
