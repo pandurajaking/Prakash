@@ -954,8 +954,14 @@ async def account_login(bot: Client, m: Message):
                 dur = int(helper.duration(filename))
 
                 start_time = time.time()
-                if "pdf" in url1:
-                    await m.reply_document(filename, caption=cc)
+                if "pdf" in url:
+                    response = requests.get(url1)
+                    if response.status_code == 200:
+                        with open(f"{name}.pdf", "wb") as pdf_file:
+                            pdf_file.write(response.content)
+                else:
+                    await m.reply_text(f"Failed to download PDF: {url}")
+                    continue
                 else:
                     await m.reply_video(filename,
                                         supports_streaming=True,
