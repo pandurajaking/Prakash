@@ -948,7 +948,7 @@ async def account_login(bot: Client, m: Message):
 
                 dur = int(helper.duration(filename))
 
-start_time = time.time()
+    start_time = time.time()
 
 if "pdf" in url:  # Check if the link is for a PDF
     try:
