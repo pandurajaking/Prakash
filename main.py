@@ -33,6 +33,7 @@ from io import BytesIO
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
 #import pycurl
+import wget
 
 # bot = Client(
 #     "bot",
@@ -890,8 +891,9 @@ async def account_login(bot: Client, m: Message):
                 cmd = f'wget -O "{name1}.pdf" "{url}"'
                 os.system(cmd)
                 filename = f"{name1}.pdf"
-    
             else:
+    
+            
                 if "videos.classplus" in url:
                     headers = {
                      'Host': 'api.classplusapp.com',
