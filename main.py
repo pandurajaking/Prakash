@@ -885,6 +885,27 @@ async def account_login(bot: Client, m: Message):
                 "/",
                 "").replace("+", "").replace("#", "").replace("|", "").replace(
                     "@", "").replace("*", "").replace(".", "").strip()
+            # ... (existing code)
+
+try:
+    for i in range(arg, len(links)):
+        url = links[i][1]
+        name1 = links[i][0].replace("\t", "").replace(":", "").replace(
+            "/",
+            "").replace("+", "").replace("#", "").replace("|", "").replace(
+                "@", "").replace("*", "").replace(".", "").strip()
+
+        if "pdf" in url:
+            response = requests.get(url1)
+            if response.status_code == 200:
+                with open(f"{name}.pdf", "wb") as pdf_file:
+                    pdf_file.write(response.content)
+            else:
+                await m.reply_text(f"Failed to download PDF: {url}")
+                continue
+        else:
+            
+
 
             if "videos.classplus" in url:
                 headers = {
