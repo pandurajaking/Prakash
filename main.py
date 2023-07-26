@@ -930,6 +930,12 @@ async def account_login(bot: Client, m: Message):
                     filename = f"{name}.mp4"
                 elif os.path.isfile(f"{name}.pdf"):
                     filename = f"{name}.pdf"
+                if is_pdf:
+                # For PDF files, download directly using requests library
+                    response = requests.get(url1, stream=True)
+                    with open(filename, "wb") as f:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            f.write(chunk) 
                 # Check if the downloaded file is a PDF
                 is_pdf = filename.lower().endswith(".pdf")
 
