@@ -930,26 +930,32 @@ async def account_login(bot: Client, m: Message):
                     filename = f"{name}.mp4"
                 elif os.path.isfile(f"{name}.pdf"):
                     filename = f"{name}.pdf"
+                # Check if the downloaded file is a PDF
+                is_pdf = filename.lower().endswith(".pdf")
+
+                # Generate the thumbnail only if it's not a PDF
+                if not is_pdf:
+                      filename = f"{name}.mkv"
+                    subprocess.run(
+                        f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
+                        shell=True)
 
 
-#                 filename = f"{name}.mkv"
-                subprocess.run(
-                    f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
-                    shell=True)
+#                 
                 await prog.delete(True)
                 reply = await m.reply_text(f"Uploading - ```{name}```")
                 try:
-                    if thumb == "no":
-                        thumbnail = f"{filename}.jpg"
-                    else:
-                        thumbnail = thumb
+                   if thumb == "no":
+                       thumbnail = f"{filename}.jpg" if not is_pdf else None
+                   else:
+                       thumbnail = thumb if not is_pdf else None
                 except Exception as e:
                     await m.reply_text(str(e))
 
                 dur = int(helper.duration(filename))
 
                 start_time = time.time()
-                if "pdf" in url1:
+                if is_pdf:
                     await m.reply_document(filename, caption=cc)
                 else:
                     await m.reply_video(filename,
@@ -963,8 +969,8 @@ async def account_login(bot: Client, m: Message):
                                         progress_args=(reply, start_time))
                 count += 1
                 os.remove(filename)
-
-                os.remove(f"{filename}.jpg")
+                if not is_pdf:
+                    os.remove(f"{filename}.jpg")
                 await reply.delete(True)
                 time.sleep(1)
             except Exception as e:
