@@ -922,15 +922,18 @@ async def account_login(bot: Client, m: Message):
                    os.system(cmd)
                    await prog.delete(True)
                    reply = await m.reply_text(f"Uploading - ```{name}.pdf```")
-                   cc = f'**Title  ┬╗** {name1}.pdf\n**Caption ┬╗** {raw_text0}\n**Index ┬╗** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
+                   cc = f'**Title »** {name1}.pdf\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
                    await m.reply_document(f"{name}.pdf", caption=cc)
                    count += 1
-                   os.remove(f"{name}.pdf")
                    await reply.delete(True)
                    time.sleep(1)
-                
+               except Exception as e:
+                   await m.reply_text(
+                       f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - {url}"
+                   )
+                   continue
                    
-                  
+                 
             else:
                 cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv --format "bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]" "{url1}"'
 
