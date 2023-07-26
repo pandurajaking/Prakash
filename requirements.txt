@@ -17,3 +17,4 @@ hachoir
 mime
 mimetypes-extensions
 wget
+progressor
