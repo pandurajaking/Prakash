@@ -32,7 +32,8 @@ from shutil import get_terminal_size
 from io import BytesIO
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
-#import pycurl
+import pycurl
+import wget
 
 # bot = Client(
 #     "bot",
@@ -1115,6 +1116,38 @@ async def account_login(bot: Client, m: Message):
     except Exception as e:
         await m.reply_text(str(e))
     await m.reply_text("Done") 
+@bot.on_message(filters.command(["pro_download"]))
+async def download_pdf(bot: Client, m: Message):
+    # Similar setup as the previous command, checking user authorization, etc.
+
+    # Replace the existing code block for downloading videos with a new one
+    try:
+        for i in range(arg, len(links)):
+            url = links[i][1]
+            name = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").strip()
+
+            if ".pdf" in url:
+                # Download PDF files using requests or any suitable library
+                response = requests.get(url)
+                if response.status_code == 200:
+                    # Save the PDF file
+                    with open(f"{path}/{name}.pdf", "wb") as f:
+                        f.write(response.content)
+
+                    # Proceed to upload the PDF to Telegram
+                    await m.reply_document(f"{path}/{name}.pdf", caption="Your caption here")
+                    os.remove(f"{path}/{name}.pdf")  # Remove the downloaded file after upload
+
+            else:
+                # Handle other types of links (if needed)
+                # For example, you can add video downloading logic here
+                pass
+    except Exception as e:
+        await m.reply_text(f"Downloading failed: {str(e)}")
+
+    await m.reply_text("Done")
+    
+    
  
     
 bot.run()
