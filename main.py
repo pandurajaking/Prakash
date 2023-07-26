@@ -948,9 +948,9 @@ async def account_login(bot: Client, m: Message):
 
                 dur = int(helper.duration(filename))
 
-                start_time = time.time()
+start_time = time.time()
 
-    if "pdf" in url:  # Check if the link is for a PDF
+if "pdf" in url:  # Check if the link is for a PDF
     try:
         # Use the 'requests' library to download the PDF
         response = requests.get(url1)
@@ -967,6 +967,7 @@ async def account_login(bot: Client, m: Message):
     except Exception as e:
         await m.reply_text(f"**Downloading failed тЭМ**\n{str(e)}\n**Name** - {name}\n**Link** - {url} & {url1}")
         continue
+
 
 
                     
