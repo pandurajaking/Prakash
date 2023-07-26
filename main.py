@@ -935,6 +935,9 @@ async def account_login(bot: Client, m: Message):
 
                 # Generate the thumbnail only if it's not a PDF
                 if not is_pdf:
+                    import unicodedata
+                    normalized_name = unicodedata.normalize('NFKD', name).encode('ascii', 'ignore').decode()
+                    thumbnail_filename = f"{normalized_name}.jpg"
                     subprocess.run(
                         f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
                         shell=True)
