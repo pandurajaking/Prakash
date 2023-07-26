@@ -16,3 +16,4 @@ python-decouple
 hachoir
 mime
 mimetypes-extensions
+wget
