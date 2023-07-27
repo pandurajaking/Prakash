@@ -33,6 +33,9 @@ from io import BytesIO
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
 #import pycurl
+import math
+from requests import get
+import yt_dlp
 
 # bot = Client(
 #     "bot",
@@ -807,17 +810,20 @@ async def account_login(bot: Client, m: Message):
     await m.reply_text("Done")
 
 
-@bot.on_message(filters.command(["pro_jw"]))
+
+
+@Client.on_message(filters.command(["pro_jw"]))
 async def account_login(bot: Client, m: Message):
     user = m.from_user.id if m.from_user is not None else None
     if user is not None and user not in sudo_users:
         await m.reply("**TUM BHOSADI WALE NIKKAL LO**", quote=True)
         return
-    else:
-        editable = await m.reply_text(
-            "Hello @Prakash_Baraiya **I am jw Downloader Bot**. I can download videos from **text** file one by one.**\n\nLanguage** : Python**\nFramework** :Pyrogram\n\nSend **TXT** File {Name : Link}"
-       ,reply_markup=keyboard)
-    input: Message = await bot.listen(editable.chat.id)
+
+    await m.reply_text(
+        "Hello @Prakash_Baraiya **I am jw Downloader Bot**. I can download videos from **text** file one by one.**\n\nLanguage** : Python**\nFramework** :Pyrogram\n\nSend **TXT** File {Name : Link}"
+    )
+
+    input: Message = await bot.listen(m.chat.id)
     x = await input.download()
     await input.delete(True)
 
@@ -831,60 +837,50 @@ async def account_login(bot: Client, m: Message):
         for i in content:
             links.append(i.split(":", 1))
         os.remove(x)
-        # print(len(links))
-    except:
+    except Exception as e:
         await m.reply_text("Invalid file input.")
         os.remove(x)
         return
 
-    editable = await m.reply_text(
-        f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**"
-    )
-    input1: Message = await bot.listen(editable.chat.id)
+    await m.reply_text(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**")
+
+    input1: Message = await bot.listen(m.chat.id)
     raw_text = input1.text
 
     try:
         arg = int(raw_text)
-    except:
+    except Exception as e:
+        await m.reply_text("Invalid input for starting index. Assuming start index is 0.")
         arg = 0
 
     editable = await m.reply_text("**Enter Title**")
-    input0: Message = await bot.listen(editable.chat.id)
+    input0: Message = await bot.listen(m.chat.id)
     raw_text0 = input0.text
 
     await m.reply_text("**Enter resolution**")
 
-
-    input2: Message = await bot.listen(editable.chat.id)
-    
+    input2: Message = await bot.listen(m.chat.id)
     raw_text2 = input2.text
 
-    editable4 = await m.reply_text(
-        "Now send the **Thumb url**\nEg : ```https://telegra.ph/file/d9e24878bd4aba05049a1.jpg```\n\nor Send **no**"
-    )
-    input6 = message = await bot.listen(editable.chat.id)
-    raw_text6 = input6.text
+    try:
+        resolution = int(raw_text2)
+        if resolution < 144 or resolution > 2160:
+            raise ValueError
+    except ValueError:
+        await m.reply_text("Invalid input for resolution. Please enter a valid number between 144 and 2160.")
+        return
 
-    thumb = input6.text
-    if thumb.startswith("http://") or thumb.startswith("https://"):
-        getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
-        thumb = "thumb.jpg"
-    else:
-        thumb == "no"
+    editable4 = await m.reply_text("Now send the **Thumb url**\nEg : ```https://telegra.ph/file/d9e24878bd4aba05049a1.jpg```\n\nor Send **no**")
+    input6 = await bot.listen(m.chat.id)
+    thumb_url = input6.text
 
-    if raw_text == '0':
-        count = 1
-    else:
-        count = int(raw_text)
+    thumb = download_thumbnail(thumb_url)
 
+    count = arg + 1
     try:
         for i in range(arg, len(links)):
-
             url = links[i][1]
-            name1 = links[i][0].replace("\t", "").replace(":", "").replace(
-                "/",
-                "").replace("+", "").replace("#", "").replace("|", "").replace(
-                    "@", "").replace("*", "").replace(".", "").strip()
+            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").strip()
 
             if "videos.classplus" in url:
                 headers = {
@@ -898,83 +894,73 @@ async def account_login(bot: Client, m: Message):
                     'device-details':
                     '2848b866799971ca_2848b8667a33216c_SDK-30',
                     'accept-encoding': 'gzip',
-                }
+          }
 
-                params = (('url', f'{url}'), )
-
-                response = requests.get(
-                    'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
-                    headers=headers,
-                    params=params)
-                # print(response.json())
-                url1 = response.json()['url']
+                params = {'url': url}
+                response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
+                url1 = response.json().get('url', url)
             else:
                 url1 = url
 
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
-            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
-            if "pdf" in url:
-                cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
-            else:
-                cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv --format "bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]" "{url1}"'
 
             try:
-                download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
-                os.system(download_cmd)
+                ydl_opts = {
+                    'outtmpl': f"{name}.%(ext)s",
+                    'format': f"bestvideo[height<={resolution}]+bestaudio/best[height<={resolution}]",
+                    'quiet': True,
+                    'merge_output_format': 'mkv',
+                }
 
-                if os.path.isfile(f"{name}.mkv"):
-                    filename = f"{name}.mkv"
-                elif os.path.isfile(f"{name}.mp4"):
-                    filename = f"{name}.mp4"
-                elif os.path.isfile(f"{name}.pdf"):
-                    filename = f"{name}.pdf"
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info_dict = ydl.extract_info(url1, download=False)
+                    if 'entries' in info_dict:
+                        info_dict = info_dict['entries'][0]
 
+                    filename = ydl.prepare_filename(info_dict)
 
-#                 filename = f"{name}.mkv"
+                    ydl.download([url1])
+
+                thumbnail_file = f"{filename}.jpg"
                 subprocess.run(
-                    f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
-                    shell=True)
+                    f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{thumbnail_file}"',
+                    shell=True
+                )
                 await prog.delete(True)
-                reply = await m.reply_text(f"Uploading - ```{name}```")
-                try:
-                    if thumb == "no":
-                        thumbnail = f"{filename}.jpg"
-                    else:
-                        thumbnail = thumb
-                except Exception as e:
-                    await m.reply_text(str(e))
 
-                dur = int(helper.duration(filename))
+                cc = f'**Title ┬╗** {name1}.mkv\n**Caption ┬╗** {raw_text0}\n**Index ┬╗** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
+                dur = int(ydl.calc_duration(info_dict))
 
                 start_time = time.time()
                 if "pdf" in url1:
                     await m.reply_document(filename, caption=cc)
                 else:
-                    await m.reply_video(filename,
-                                        supports_streaming=True,
-                                        height=720,
-                                        width=1280,
-                                        caption=cc,
-                                        duration=dur,
-                                        thumb=thumbnail,
-                                        progress=progress_bar,
-                                        progress_args=(reply, start_time))
+                    await m.reply_video(
+                        filename,
+                        supports_streaming=True,
+                        height=720,
+                        width=1280,
+                        caption=cc,
+                        duration=dur,
+                        thumb=thumbnail_file if thumb is None else thumb,
+                        progress=progress_bar,
+                        progress_args=(m.text, start_time)
+                    )
                 count += 1
                 os.remove(filename)
-
-                os.remove(f"{filename}.jpg")
-                await reply.delete(True)
+                os.remove(thumbnail_file)
+                await prog.delete(True)
                 time.sleep(1)
             except Exception as e:
-                await m.reply_text(
-                    f"**downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
-                )
+                await m.reply_text(f"**downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`")
                 continue
     except Exception as e:
-        await m.reply_text(e)
+        await m.reply_text(str(e))
+
     await m.reply_text("Done")
+                
 
 
 @bot.on_message(filters.command(["top"]))
