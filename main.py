@@ -991,10 +991,9 @@ async def account_login(bot: Client, m: Message):
                 retry_count += 1
                 time.sleep(5)
 
-               if not retry_successful:
-                   print(f"Max retry count reached for link {i + 1}. Skipping to the next link.")
+               
             except Exception as e:
-                await m.reply_text(str(e))
+                
                   
                 await m.reply_text(
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
