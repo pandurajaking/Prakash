@@ -912,6 +912,11 @@ async def account_login(bot: Client, m: Message):
                 url1 = url
 
             name = f'{str(count).zfill(3)}) {name1}'
+            if "pdf" in url1:
+                name = f'{str(count).zfill(3)}) {name1}.pdf'
+            else:
+                name = f'{str(count).zfill(3)}) {name1}.mkv'
+    
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
             cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
