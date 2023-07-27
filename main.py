@@ -812,7 +812,7 @@ async def account_login(bot: Client, m: Message):
 
 
 
-@Client.on_message(filters.command(["pro_jw"]))
+@bot.on_message(filters.command(["pro_jw"]))
 async def account_login(bot: Client, m: Message):
     user = m.from_user.id if m.from_user is not None else None
     if user is not None and user not in sudo_users:
