@@ -924,34 +924,34 @@ async def account_login(bot: Client, m: Message):
                 download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
                 os.system(download_cmd)
 
-                if os.path.isfile(f"{name}.mkv"):
-                    filename = f"{name}.mkv"
-                elif os.path.isfile(f"{name}.mp4"):
-                    filename = f"{name}.mp4"
-                elif os.path.isfile(f"{name}.pdf"):
+                if "pdf" in url1:
                     filename = f"{name}.pdf"
+                else:
+                    filename = f"{name}.mkv" if os.path.isfile(f"{name}.mkv") else f"{name}.mp4"
 
+                if not os.path.exists(filename):
+                    raise FileNotFoundError(f"File not found: {filename}")
 
-#                 filename = f"{name}.mkv"
-                subprocess.run(
-                    f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
-                    shell=True)
+                if "pdf" not in url1:
+                    subprocess.run(
+                        f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
+                        shell=True)
+
+#                 
                 await prog.delete(True)
                 reply = await m.reply_text(f"Uploading - ```{name}```")
                 try:
                     if thumb == "no":
-                        thumbnail = f"{filename}.jpg"
+                        thumbnail = f"{filename}.jpg" if not "pdf" in url1 else None
                     else:
                         thumbnail = thumb
                 except Exception as e:
                     await m.reply_text(str(e))
 
-                dur = int(helper.duration(filename))
-
-                start_time = time.time()
                 if "pdf" in url1:
                     await m.reply_document(filename, caption=cc)
                 else:
+                    dur = int(helper.duration(filename))
                     await m.reply_video(filename,
                                         supports_streaming=True,
                                         height=720,
@@ -964,12 +964,13 @@ async def account_login(bot: Client, m: Message):
                 count += 1
                 os.remove(filename)
 
-                os.remove(f"{filename}.jpg")
+                if not "pdf" in url1:
+                    os.remove(f"{filename}.jpg")
                 await reply.delete(True)
                 time.sleep(1)
             except Exception as e:
                 await m.reply_text(
-                    f"**downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
+                    f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
                 continue
     except Exception as e:
