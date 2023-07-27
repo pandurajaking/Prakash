@@ -919,8 +919,11 @@ async def account_login(bot: Client, m: Message):
     
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
-            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
-            if "pdf" in url1:
+            if "pdf" in url:
+                cc = f'**Title »** {name1}.pdf\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
+            else:
+                cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
+                
                 name = f'{str(count).zfill(3)}) {name1}.pdf'
                 if not os.path.isfile(f"{name}.pdf"):
                     cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
