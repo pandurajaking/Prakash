@@ -934,8 +934,8 @@ async def account_login(bot: Client, m: Message):
                    time.sleep(1)
                    os.remove(ka)
                    time.sleep(3)
-               except FloodWait as e:
-                   await m.reply_text(str(e))
+   except Exception as e:
+       await m.reply_text(e)
                    time.sleep(e.x)
                    continue
             else:
@@ -1001,7 +1001,7 @@ async def account_login(bot: Client, m: Message):
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
                 continue
-    except Exception as e:
+        except Exception as e:
         await m.reply_text(e)
     await m.reply_text("Done")
 
