@@ -935,7 +935,7 @@ async def account_login(bot: Client, m: Message):
                    os.remove(ka)
                    time.sleep(3)
    
-       await m.reply_text(e)
+       
                    time.sleep(e.x)
                    continue
             else:
