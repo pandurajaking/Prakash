@@ -934,7 +934,7 @@ async def account_login(bot: Client, m: Message):
                    time.sleep(1)
                    os.remove(ka)
                    time.sleep(3)
-   except Exception as e:
+   
        await m.reply_text(e)
                    time.sleep(e.x)
                    continue
