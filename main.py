@@ -916,7 +916,7 @@ async def account_login(bot: Client, m: Message):
             prog = await m.reply_text(Show)
             if "pdf" in url:
                 filename = f"{name}.pdf"
-                cc = f'**Title »** {name1}.pdf\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-           @Prakash_Baraiya'
+                cc = f'**Title »** {name1}.pdf\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                       @Prakash_Baraiya'
             else:
                 filename = f"{name}.mkv" if os.path.isfile(f"{name}.mkv") else f"{name}.mp4"
                 cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
