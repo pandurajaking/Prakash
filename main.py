@@ -914,14 +914,36 @@ async def account_login(bot: Client, m: Message):
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
-            if "pdf" in url:
-            # For PDF files, use a separate cc variable without the .mkv extension
-            cc_pdf = f'**Title »** {name1}\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
-            cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
-        else:
-            # For videos, use the original cc variable with the .mkv extension
-            cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
-            cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv --format "bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]" "{url1}"'
+            cc = f"**Name »** {name1} {res}.mkv\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}"
+            cc1 = f"**Name »** ** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}"
+
+            if cmd == "pdf" or ".pdf" in url or ".pdf" in name:
+                try:
+                   ka = await helper.aio(url, name)
+                   await prog.delete(True)
+                   time.sleep(1)
+                   reply = await m.reply_text(f"Uploading - ```{name}```")
+                   time.sleep(1)
+                   start_time = time.time()
+                   await m.reply_document(
+                       ka,
+                       caption=f"**Name »** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}"
+                   )
+                   count += 1
+                   await reply.delete(True)
+                   time.sleep(1)
+                   os.remove(ka)
+                   time.sleep(3)
+               except FloodWait as e:
+                   await m.reply_text(str(e))
+                   time.sleep(e.x)
+                   continue
+            else:
+                cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv --format "bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]" "{url1}"'
+      
+                   
+    
+    
 
             try:
                 download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
