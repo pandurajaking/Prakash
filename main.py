@@ -947,11 +947,14 @@ async def account_login(bot: Client, m: Message):
                         thumbnail = thumb
                 except Exception as e:
                     await m.reply_text(str(e))
-
+                    
+                
                 if "pdf" in url1:
                     await m.reply_document(filename, caption=cc)
                 else:
                     dur = int(helper.duration(filename))
+                    
+                    start_time = time.time()
                     await m.reply_video(filename,
                                         supports_streaming=True,
                                         height=720,
