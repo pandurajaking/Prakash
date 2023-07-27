@@ -23,7 +23,7 @@ import aiofiles
 from pyrogram.types import User, Message
 # import progressor
 # from progressor import progress_for_pyrogram
-#import sys
+import sys
 import re
 import os
 import io
@@ -32,7 +32,7 @@ from shutil import get_terminal_size
 from io import BytesIO
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
-#import pycurl
+import pycurl
 
 # bot = Client(
 #     "bot",
