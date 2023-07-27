@@ -17,5 +17,5 @@ hachoir
 mime
 mimetypes-extensions
 wget
-progressor
-os-sys
+
+
