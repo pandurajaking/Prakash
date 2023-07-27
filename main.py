@@ -33,6 +33,7 @@ from io import BytesIO
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
 #import pycurl
+MAX_RETRY_COUNT = 5
 
 # bot = Client(
 #     "bot",
@@ -920,7 +921,10 @@ async def account_login(bot: Client, m: Message):
             else:
                 filename = f"{name}.mkv" if os.path.isfile(f"{name}.mkv") else f"{name}.mp4"
                 cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
-            
+        retry_count = 0
+        retry_successful = False
+        while retry_count < MAX_RETRY_COUNT and not retry_successful:
+         try:
             
             if "pdf" in url:
                 
@@ -980,7 +984,16 @@ async def account_login(bot: Client, m: Message):
                     os.remove(f"{filename}.jpg")
                 await reply.delete(True)
                 time.sleep(1)
+                retry_successful = True
             except Exception as e:
+                # If there's an error during download or upload, log the error and wait for 5 seconds before retrying.
+                print(f"Error occurred for link {i + 1}. Retrying ({retry_count + 1}/{MAX_RETRY_COUNT})...")
+                retry_count += 1
+                time.sleep(5)
+
+        if not retry_successful:
+            print(f"Max retry count reached for link {i + 1}. Skipping to the next link.")
+            
                 await m.reply_text(
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
