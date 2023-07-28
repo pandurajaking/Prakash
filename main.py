@@ -919,7 +919,7 @@ async def account_login(bot: Client, m: Message):
                 cc = f'**Title »** {name1}.pdf\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                       @Prakash_Baraiya'
             else:
                 filename = f"{name}.mp4" if os.path.isfile(f"{name}.mp4") else f"{name}.mkv"
-                cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
+                cc = f'**Title »** {name1}.mp4\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
             
             
             if "pdf" in url:
