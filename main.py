@@ -894,9 +894,9 @@ async def account_login(bot: Client, m: Message):
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.73.2',
                     'api-version': '35',
-                    'device-id': 'c28d3cb16bbdac01',
+                    'device-id': '5d0d17ac8b3c9f51',
                     'device-details':
-                    'Xiaomi_Redmi 7_SDK-32',
+                    '2848b866799971ca_2848b8667a33216c_SDK-30',
                     'accept-encoding': 'gzip',
                 }
 
