@@ -950,7 +950,7 @@ async def account_login(bot: Client, m: Message):
                 await prog.delete(True)
                 reply = await m.reply_text(f"Uploading - ```{name}```")
                 try:
-                    if thumb = "no":
+                    if thumb == "no":
                         thumbnail = f"{filename}.jpg" if not "pdf" in url1 else None
                     else:
                         thumbnail = thumb
