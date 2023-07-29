@@ -203,7 +203,7 @@ async def account_login(bot: Client, m: Message):
         getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
         thumb = "thumb.jpg"
     else:
-        thumb == "no"
+        thumb = "no"
 
     if raw_text == '0':
         count = 1
@@ -870,7 +870,7 @@ async def account_login(bot: Client, m: Message):
         getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
         thumb = "thumb.jpg"
     else:
-        thumb == "no"
+        thumb = "no"
 
     if raw_text == '0':
         count = 1
@@ -950,7 +950,7 @@ async def account_login(bot: Client, m: Message):
                 await prog.delete(True)
                 reply = await m.reply_text(f"Uploading - ```{name}```")
                 try:
-                    if thumb == "no":
+                    if thumb = "no":
                         thumbnail = f"{filename}.jpg" if not "pdf" in url1 else None
                     else:
                         thumbnail = thumb
