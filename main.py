@@ -156,7 +156,8 @@ async def account_login(bot: Client, m: Message):
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
     await input.delete(True)
-    logging.info(2333)
+    logging.info("Processing data: %d", 2333)
+    
     path = f"./downloads/{m.chat.id}"
 
     try:
