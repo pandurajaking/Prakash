@@ -28,10 +28,6 @@ import re
 import os
 import io
 import logging
-from shutil import get_terminal_size
-from io import BytesIO
-from hachoir.parser import createParser
-from hachoir.metadata import extractMetadata
 import pycurl
 
 # bot = Client(
