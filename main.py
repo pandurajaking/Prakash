@@ -29,6 +29,8 @@ import os
 import io
 import logging
 import pycurl
+import yt_dlp
+
 
 # bot = Client(
 #     "bot",
@@ -293,6 +295,8 @@ async def account_login(bot: Client, m: Message):
                     ytf = out['852x470']
                 elif '1280x720' in out:
                     ytf = out['1280x720']
+                elif '320x240' in out:
+                    ytf = out['320x240']
                 elif 'unknown' in out:
                     ytf = out["unknown"]
                 else:
@@ -381,7 +385,7 @@ async def account_login(bot: Client, m: Message):
             except Exception:
                 res = "NA"
 
-            # if "youtu" in url:
+            # if "youtube" in url:
             # if ytf == f"'bestvideo[height<={raw_text2}][ext=mp4]+bestaudio[ext=m4a]'" or "acecwply" in url:
             if "acecwply" in url:
                 cmd = f'yt-dlp -o "{name}.%(ext)s" -f "bestvideo[height<={raw_text2}]+bestaudio" --hls-prefer-ffmpeg --no-keep-video --remux-video mp4 --no-warning "{url}"'
