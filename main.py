@@ -886,7 +886,7 @@ async def account_login(bot: Client, m: Message):
                 "").replace("+", "").replace("#", "").replace("|", "").replace(
                     "@", "").replace("*", "").replace(".", "").strip()
 
-            if "videos.classplus" in url:
+            if "videos.classplus,cpvod.testbook,drm.classplus,cdn.jwplayer,jwplayer" in url:
                 headers = {
                     'Host': 'api.classplusapp.com/v2',
                     'x-access-token':
@@ -901,7 +901,6 @@ async def account_login(bot: Client, m: Message):
                     'accept-language': 'EN',
                     'connection'     : 'Keep-Alive',
                     'region'         : 'IN',
-                    'webengage-luid' : '00000187-6fe4-5d41-a530-26186858be4c'
                     
                 }
 
