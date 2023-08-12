@@ -898,6 +898,11 @@ async def account_login(bot: Client, m: Message):
                     'device-details':
                     'Xiaomi_Redmi 7_SDK-32',
                     'accept-encoding': 'gzip',
+                    'accept-language': 'EN',
+                    'connection'     : 'Keep-Alive',
+                    'region'         : 'IN',
+                    'webengage-luid' : '00000187-6fe4-5d41-a530-26186858be4c'
+                    
                 }
 
                 params = (('url', f'{url}'), )
