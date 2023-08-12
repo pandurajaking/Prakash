@@ -888,7 +888,7 @@ async def account_login(bot: Client, m: Message):
 
             if "videos.classplus" in url:
                 headers = {
-                    'Host': 'https://api.classplusapp.com/v2',
+                    'Host': 'api.classplusapp.com/v2',
                     'x-access-token':
                     'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTc1OTk5NjMsIm9yZ0lkIjozNTE1MjEsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOnRydWUsIm9yZ0NvZGUiOiJhdWZpciIsImZpbmdlcnByaW50SWQiOiJjOWIxZDZiZDMxMTI3M2U0OTJiNTcxYTAwMWQ0YTkyNSIsImlhdCI6MTY5MDY5ODczOCwiZXhwIjoxNjkxMzAzNTM4fQ.kDUNPb5EFDp1vmNZ-VcRIBn2vSEz_ssyAxmqbSDLJFD42g7i43aIrWgFbWYfh60L',
                     'user-agent': 'Mobile-Android',
