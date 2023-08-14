@@ -886,7 +886,8 @@ async def account_login(bot: Client, m: Message):
                 "").replace("+", "").replace("#", "").replace("|", "").replace(
                     "@", "").replace("*", "").replace(".", "").strip()
 
-            if "videos.classplus","cpvod.testbook","jwplayer" in url:
+            if any(keyword in url for keyword in ["videos.classplus", "cpvod.testbook", "jwplayer"]):
+
                 headers = {
                     'Host': 'api.classplusapp.com',
                     'x-access-token':
