@@ -902,6 +902,8 @@ async def account_login(bot: Client, m: Message):
                     'accept-language': 'EN',
                     'connection'     : 'Keep-Alive',
                     'region'         : 'IN',
+                    'auth_url': "https://license.vdocipher.com/auth/wv/eyJjb250ZW50QXV0aCI6ImV5SmpiMjUwWlc1MFNXUWlPaUl5WXpNMU1EWmhPVEV5TURCaVlUbG1OVFF5T0dObFlUWTJNRFV3WldReU1DSXNJbVY0Y0dseVpYTWlPaUl4Tmpnek1qSXlNekEzSWl3aWJHbGpaVzV6WlZKMWJHVnpJam9pZTF3aVkyRnVVR1Z5YzJsemRGd2lPbVpoYkhObExGd2ljbVZ1ZEdGc1JIVnlZWFJwYjI1Y0lqb3hPREF3TUgwaWZRPT0iLCJzaWduYXR1cmUiOiI3ZTU0NjliOGRmMDQ0ZmFjOjIwMjMwNTAzVDE3NDUwN1o6RURfVjgzTTAzTXZacUNsVms1dUZ1aFdONk8zeWlzdzJESDU5cndpYlNhaz0ifQ=="
+                    
                     
                 }
 
