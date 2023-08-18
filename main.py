@@ -405,8 +405,8 @@ async def account_login(bot: Client, m: Message):
             try:
                 Show = f"**Downloading:-**\n\n**Name :-** `{name}\nQuality - {raw_text2}`\n\n**Url :-** `{url}`"
                 prog = await m.reply_text(Show)
-                cc = f"**Name »** {name1} {res}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya_Bot"
-                cc1 = f"**Name »** ** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                       @Prakash_Baraiya_Bot"
+                cc = f"**Name »** {name1} {res}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Gujarati_Hacker_Bot"
+                cc1 = f"**Name »** ** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                       @Gujarati_Hacker_Bot"
                 #                         await prog.delete (True)
                 #                 if cmd == "pdf" or "drive" in url:
                 #                     try:
@@ -438,7 +438,7 @@ async def account_login(bot: Client, m: Message):
                         await m.reply_document(
                             ka,
                             caption=
-                            f"**Name »** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                       @Prakash_Baraiya_Bot"
+                            f"**Name »** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                        @Gujarati_Hacker_Bot"
                         )
                         count += 1
                         # time.sleep(1)
@@ -922,10 +922,10 @@ async def account_login(bot: Client, m: Message):
             prog = await m.reply_text(Show)
             if "pdf" in url:
                 filename = f"{name}.pdf"
-                cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                       @Prakash_Baraiya_Bot'
+                cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                       @Gujarati_Hacker_Bot'
             else:
                 filename = f"{name}.mp4" if os.path.isfile(f"{name}.mp4") else f"{name}.mkv"
-                cc = f'**Title »** {name1}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya_Bot'
+                cc = f'**Title »** {name1}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Gujarati_Hacker_Bot'
             
             
             if "pdf" in url:
