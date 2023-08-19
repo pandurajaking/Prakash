@@ -62,7 +62,7 @@ bot = Client("bot",
              api_hash=os.environ.get("API_HASH"))
 auth_users = [1085174050,5934830127]
 sudo_users = auth_users
-sudo_groups = [-1001663303433]
+sudo_groups = [-1001663303433,-1001928656768,-1001886099098]
 
 shell_usage = f"**USAGE:** Executes terminal commands directly via bot.\n\n<pre>/shell pip install requests</pre>"
 def one(user_id):
@@ -898,7 +898,7 @@ async def account_login(bot: Client, m: Message):
                     'device-id': 'c28d3cb16bbdac01',
                     'device-details':
                     'Xiaomi_Redmi 7_SDK-32',
-                    'accept-encoding': 'gzip',
+                    'accept-encoding': 'gzip, deflate, br',
                     'accept-language': 'EN',
                     'connection'     : 'Keep-Alive',
                     'region'         : 'IN',
