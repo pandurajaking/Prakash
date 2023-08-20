@@ -385,8 +385,8 @@ async def account_login(bot: Client, m: Message):
             except Exception:
                 res = "NA"
 
-            if "youtube" in url:
-            if ytf == f"'bestvideo[height<={raw_text2}][ext=mp4]+bestaudio[ext=m4a]'" or "acecwply" in url:
+           # if "youtube" in url:
+           # if ytf == f"'bestvideo[height<={raw_text2}][ext=mp4]+bestaudio[ext=m4a]'" or "acecwply" in url:
             if "acecwply" in url:
                 cmd = f'yt-dlp -o "{name}.%(ext)s" -f "bestvideo[height<={raw_text2}]+bestaudio" --hls-prefer-ffmpeg --no-keep-video --remux-video mp4 --no-warning "{url}"'
             elif "youtu" in url:
