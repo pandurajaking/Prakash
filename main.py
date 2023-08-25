@@ -898,7 +898,7 @@ async def account_login(bot: Client, m: Message):
                     'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTI4MDg3NzV9.KV6Rn_6sfC4_8Soqxl4lo3wQl0jZYF8mqTObsEnp3t4CR9oOoMqxP8-Qg5ZqxPw6gXhhZa4nPF_ofsfDYLk60g',
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.69',
-                    'api-version': '23',
+                    'api-version': '21',
                     'device-id': 'c28d3cb16bbdac01',
                     'device-details':
                     'Xiaomi_Redmi 7_SDK-32',
