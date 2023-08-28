@@ -13,7 +13,7 @@ humanize
 cryptg
 telethon
 python-decouple
-pycurl==7.44.0
+pycurl
 pip
 
 
