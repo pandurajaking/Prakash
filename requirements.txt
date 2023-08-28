@@ -13,6 +13,7 @@ humanize
 cryptg
 telethon
 python-decouple
+python-dotenv
 
 pip
 
