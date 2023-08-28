@@ -62,7 +62,10 @@ logging.getLogger("pyrogram").setLevel(logging.WARNING)
 logging = logging.getLogger()
 
 
-
+bot = Client("bot",
+             api_id = int(details.api_id)
+             api_hash = details.api_hash
+             bot_token = details.bot_token
 auth_users = [1085174050,5934830127]
 sudo_users = auth_users
 sudo_groups = [-1001663303433,-1001928656768,-1001886099098]
