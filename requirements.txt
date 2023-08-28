@@ -7,7 +7,7 @@ ffmpeg
 aiohttp
 aiofiles
 asyncio
-pycurl
+
 humanize
 
 cryptg
