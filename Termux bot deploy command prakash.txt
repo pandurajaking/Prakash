@@ -1,0 +1,49 @@
+apt-get update
+apt-get upgrade
+pkg install curl
+pkg install rust
+rustc --version 
+apt-get install python
+pkg install python
+apt-get install python-pip
+pkg install python-pip
+pip install --upgrade pip
+pkg install git
+pkg install nano
+pkg install screen
+apt-get install ffmpeg aria2
+apt --fix-broken install
+git clone https://github.com/Prakash-Baraiya/Prakash
+ https://github.com/Manish-Baraiya2003/praprividbot
+ls
+remove -  rm -rf Prakash
+
+cd Prakash
+pip install -r ./requirements.txt
+screen -R Prakash
+python3 main.py
+ctrl a d
+https://gist.githubusercontent.com/Prakash-Baraiya/34fc350ccb8e477487b3db1e7ef48c2c/raw/config.env
+
+ pkg update && pkg upgrade
+2) pkg install python3
+3) pkg install nodejs
+4) npm install -g heroku
+5) copy update command from message
+6) pkg install git
+7) git clone YOUR-REPO-LINK
+8) ls
+9) cd YOUR-REPO-NAME
+10) git checkout heroku
+
+11) heroku login
+12) heroku create --region us YOURAPPNAME
+13) heroku git:remote -a YOURAPPNAME
+14) heroku stack:set container
+15) heroku addons:create heroku-postgresql
+16) heroku config:set CONFIG_FILE_URL=URL
+17) git push heroku heroku:master -f
+18) heroku ps:scale web=1
+
+https://gist.githubusercontent.com/Prakash-Baraiya/34fc350ccb8e477487b3db1e7ef48c2c/raw/config.env
+https://gist.githubusercontent.com/Prakash-Baraiya/34fc350ccb8e477487b3db1e7ef48c2c/raw/config.env
