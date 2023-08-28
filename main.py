@@ -11,7 +11,7 @@ from pyrogram.types import Message
 import pyrogram
 import tgcrypto
 from p_bar import progress_bar
-from details import api_id, api_hash, bot_token
+#from details import api_id, api_hash, bot_token
 from subprocess import getstatusoutput
 import helper
 import logging
@@ -30,7 +30,12 @@ import io
 import logging
 #import pycurl
 import yt_dlp
+from dotenv import load_dotenv
+load_dotenv()  # Load variables from .env file
 
+api_id = int(os.getenv("API_ID"))
+api_hash = os.getenv("API_HASH")
+bot_token = os.getenv("BOT_TOKEN")
 
 # bot = Client(
 #     "bot",
@@ -55,8 +60,8 @@ logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 logging = logging.getLogger()
 
-
-bot = Client("bot",
+  
+#bot = Client("bot",
              bot_token=os.environ.get("BOT_TOKEN"),
              api_id=int(os.environ.get("API_ID")),
              api_hash=os.environ.get("API_HASH"))
