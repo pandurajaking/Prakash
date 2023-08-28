@@ -30,6 +30,12 @@ import io
 import logging
 import pycurl
 import yt_dlp
+import details  # Import variables from details.py
+
+# Now you can access the variables as attributes of the details module
+api_id = int(details.API_ID)
+api_hash = details.API_HASH
+bot_token = details.BOT_TOKEN
 
 
 # bot = Client(
