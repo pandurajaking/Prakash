@@ -16,6 +16,7 @@ python-decouple
 python-dotenv
 
 pip
+pycurl
 
 
 
