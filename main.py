@@ -33,9 +33,9 @@ import yt_dlp
 import details  # Import variables from details.py
 
 # Now you can access the variables as attributes of the details module
-api_id = int(details.API_ID)
-api_hash = details.API_HASH
-bot_token = details.BOT_TOKEN
+api_id = int(details.api_id)
+api_hash = details.api_hash
+bot_token = details.bot_token
 
 
 # bot = Client(
