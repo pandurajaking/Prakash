@@ -28,7 +28,7 @@ import re
 import os
 import io
 import logging
-import pycurl
+#import pycurl
 import yt_dlp
 
 
