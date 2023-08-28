@@ -31,11 +31,7 @@ import logging
 #import pycurl
 import yt_dlp
 from dotenv import load_dotenv
-load_dotenv()  # Load variables from .env file
 
-api_id = int(os.getenv("API_ID"))
-api_hash = os.getenv("API_HASH")
-bot_token = os.getenv("BOT_TOKEN")
 
 # bot = Client(
 #     "bot",
@@ -61,7 +57,11 @@ logging.getLogger("pyrogram").setLevel(logging.WARNING)
 logging = logging.getLogger()
 
   
+load_dotenv()  # Load variables from .env file
 
+api_id = int(os.getenv("API_ID"))
+api_hash = os.getenv("API_HASH")
+bot_token = os.getenv("BOT_TOKEN")
 auth_users = [1085174050,5934830127,6046547078]
 sudo_users = auth_users
 sudo_groups = [-1001663303433,-1001928656768,-1001886099098]
