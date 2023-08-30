@@ -13,7 +13,7 @@ telethon
 python-decouple
 python-dotenv
 pip
-pycurl
+
 mediainfo
 cloudscraper
 beautifulsoup4
