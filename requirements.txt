@@ -12,10 +12,9 @@ cryptg
 telethon
 python-decouple
 python-dotenv
-pip
+
 
 mediainfo
-cloudscraper
 
 async-lru
 wget
