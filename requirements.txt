@@ -12,7 +12,7 @@ cryptg
 telethon
 python-decouple
 python-dotenv
-aria2
+
 
 
 
