@@ -30,6 +30,7 @@ import io
 import logging
 #import pycurl
 import yt_dlp
+import wget
 import details  # Import variables from details.py
 
 # Now you can access the variables as attributes of the details module
