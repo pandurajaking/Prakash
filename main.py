@@ -951,10 +951,8 @@ async def account_login(bot: Client, m: Message):
                 else:
                     filename = f"{name}.mp4" if os.path.isfile(f"{name}.mp4") else f"{name}.mkv"
 
-                if os.path.exists(filename):  # Check if the file exists
-        # Proceed with your code to handle the file
-                else:
-                    raise FileNotFoundError(f"File not found: {filename}")  # Handle the case where the file doesn't exist
+                if not os.path.exists(filename):
+                    raise FileNotFoundError(f"File not found: {filename}")# Handle the case where the file doesn't exist
                 if "pdf" not in url1:
                     subprocess.run(
                         f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
