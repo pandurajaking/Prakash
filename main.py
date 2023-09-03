@@ -31,6 +31,8 @@ import logging
 #import pycurl
 import yt_dlp
 import details  # Import variables from details.py
+logging.basicConfig(filename='download_log.txt', level=logging.INFO)
+
 
 # Now you can access the variables as attributes of the details module
 api_id = int(details.api_id)
@@ -990,12 +992,13 @@ async def account_login(bot: Client, m: Message):
                 await reply.delete(True)
                 time.sleep(1)
             except Exception as e:
+                logging.error(f"Error downloading {name}: {str(e)}")
                 await m.reply_text(
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
                 continue
     except Exception as e:
-        await m.reply_text(e)
+        await m.reply_text(str(e))
     await m.reply_text("Done")
 
 
