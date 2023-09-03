@@ -952,7 +952,8 @@ async def account_login(bot: Client, m: Message):
                     filename = f"{name}.mp4" if os.path.isfile(f"{name}.mp4") else f"{name}.mkv"
 
                 if not os.path.exists(filename):
-                    raise FileNotFoundError(f"File not found: {filename}")# Handle the case where the file doesn't exist
+                    raise FileNotFoundError(f"File not found: {filename}")
+
                 if "pdf" not in url1:
                     subprocess.run(
                         f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
@@ -966,10 +967,6 @@ async def account_login(bot: Client, m: Message):
                         thumbnail = f"{filename}.jpg" if not "pdf" in url1 else None
                     else:
                         thumbnail = thumb
-
-                    if thumbnail is not None:
-    # Write your code to handle the thumbnail here
-    
                 except Exception as e:
                     await m.reply_text(str(e))
                     
