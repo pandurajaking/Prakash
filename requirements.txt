@@ -13,3 +13,4 @@ telethon
 python-decouple
 python-dotenv
 wget
+mediainfo
