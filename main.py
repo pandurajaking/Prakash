@@ -32,6 +32,29 @@ import logging
 import yt_dlp
 import wget
 import details  # Import variables from details.py
+def retry_request(url, headers, params=None, retries=3, timeout=30):
+    for _ in range(retries):
+        try:
+            response = requests.get(url, headers=headers, params=params, timeout=timeout)
+            response.raise_for_status()  # Raise an exception for non-2xx response codes
+            return response
+        except requests.exceptions.RequestException as e:
+            logging.error(f"HTTP request error: {str(e)}")
+            time.sleep(5)  # Add a delay before retrying
+    return None
+
+# Define a function for downloading videos
+def download_video(url, output_filename, retry_limit=3):
+    for retry_count in range(retry_limit):
+        try:
+            # Customize your download command here
+            download_cmd = f'yt-dlp -o "{output_filename}" "{url}"'
+            subprocess.run(download_cmd, shell=True, check=True)
+            return True
+        except subprocess.CalledProcessError as e:
+            logging.error(f"Video download error: {str(e)}")
+            time.sleep(5)  # Add a delay before retrying
+    return False
 
 # Now you can access the variables as attributes of the details module
 api_id = int(details.api_id)
@@ -912,12 +935,17 @@ async def account_login(bot: Client, m: Message):
 
                 params = (('url', f'{url}'), )
 
-                response = requests.get(
+                response = retry_request(
                     'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
                     headers=headers,
                     params=params)
-                # print(response.json())
-                url1 = response.json()['url']
+
+                if response:
+                    url1 = response.json()['url']
+                else:
+                    # Handle the case when the HTTP request fails after retries
+                    await m.reply_text("Failed to fetch video URL. Skipping.")
+                    continue
             else:
                 url1 = url
 
@@ -989,16 +1017,18 @@ async def account_login(bot: Client, m: Message):
                 if not "pdf" in url1:
                     os.remove(f"{filename}.jpg")
                 await reply.delete(True)
-                time.sleep(1)
+                    time.sleep(1)
+                else:
+                    await m.reply_text("Video download failed after retries.")
             except Exception as e:
+                logging.error(f"Error downloading {name}: {str(e)}")
                 await m.reply_text(
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
                 continue
     except Exception as e:
-        await m.reply_text(e)
+        await m.reply_text(str(e))
     await m.reply_text("Done")
-
 
 @bot.on_message(filters.command(["top"]))
 async def account_login(bot: Client, m: Message):
