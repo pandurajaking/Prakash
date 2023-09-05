@@ -14,6 +14,12 @@ from pyrogram import Client, filters
 from subprocess import getstatusoutput
 start_time = None
 downloaded_bytes = 0
+def hrt(secs):
+    mins, secs = divmod(secs, 60)
+    hours, mins = divmod(mins, 60)
+    return f"{int(hours):02d}:{int(mins):02d}:{int(secs):02d}"
+
+
 
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
@@ -124,23 +130,30 @@ def old_download(url, file_name, chunk_size=1024 * 10):
     start_time = time.time()
     downloaded_bytes = 0
 
-    with open(file_name, 'wb') as fd:
-        for chunk in r.iter_content(chunk_size=chunk_size):
-            if chunk:
+    for chunk in r.iter_content(chunk_size=chunk_size):
+        if chunk:
+            with open(file_name, 'ab') as fd:
                 fd.write(chunk)
                 downloaded_bytes += len(chunk)
                 elapsed_time = time.time() - start_time
+
                 if elapsed_time > 0:
                     download_speed = downloaded_bytes / elapsed_time
                     remaining_bytes = total_size - downloaded_bytes
                     eta_seconds = remaining_bytes / download_speed
-                    print(f"Downloading: {file_name}\n"
-                          f"Progress: {downloaded_bytes/total_size*100:.1f}%\n"
-                          f"Speed: {human_readable_size(download_speed)}/s\n"
-                          f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
-                          f"ETA: {hrt(eta_seconds)}")
+
+                    progress_percentage = downloaded_bytes / total_size * 100
+                    progress_info = (
+                        f"Progress 📈 -【 {progress_percentage:.1f}% 】 | "
+                        f"Speed 🧲 -【 {human_readable_size(download_speed)}/s 】 | "
+                        f"Size 📂 -【 {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)} 】 | "
+                        f"ETA ⏳ -【 {hrt(eta_seconds)} 】"
+                    )
+                    print(progress_info, end='\r')  # Print on the same line and overwrite
+
                 else:
-                    print(f"Downloading: {file_name}\n"
+                    print(f"Downloading:\n"
+                          f"Name: {file_name}\n"
                           f"Progress: {downloaded_bytes/total_size*100:.1f}%\n"
                           f"Speed: Calculating...\n"
                           f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
