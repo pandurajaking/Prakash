@@ -157,25 +157,40 @@ def time_name():
     current_time = now.strftime("%H%M%S")
     return f"{date} {current_time}.mp4"
 
-async def download_video(url,cmd, name):
-    download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
-    k = os.system(download_cmd)
-    try:
-        if os.path.isfile(name):
-            return name
-        elif os.path.isfile(f"{name}.webm"):
-            return f"{name}.webm"
-        name = name.split(".")[0]
-        if os.path.isfile(f"{name}.mkv"):
-            return f"{name}.mkv"
-        elif os.path.isfile(f"{name}.mp4"):
-            return f"{name}.mp4"
-        elif os.path.isfile(f"{name}.mp4.webm"):
-            return f"{name}.mp4.webm"
 
-        return name
-    except FileNotFoundError as exc:
-        return os.path.isfile.splitext[0] + "." + "mp4"
+async def download_video(url, cmd, name):
+    download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
+    try:
+        # Execute the download command asynchronously
+        proc = await asyncio.create_subprocess_shell(
+            download_cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+
+        # Wait for the download to complete
+        _, stderr = await proc.communicate()
+
+        if proc.returncode == 0:
+            # Check if the downloaded file exists
+            if os.path.isfile(name):
+                return name
+            elif os.path.isfile(f"{name}.webm"):
+                return f"{name}.webm"
+            name = name.split(".")[0]
+            if os.path.isfile(f"{name}.mkv"):
+                return f"{name}.mkv"
+            elif os.path.isfile(f"{name}.mp4"):
+                return f"{name}.mp4"
+            elif os.path.isfile(f"{name}.mp4.webm"):
+                return f"{name}.mp4.webm"
+            return name
+        else:
+            print(f"Download failed with error: {stderr.decode()}")
+            return None  # Handle the download failure
+    except Exception as e:
+        print(f"Error in download_video: {str(e)}")
+        return None  # Handle any other exceptions
 
 async def send_doc(bot: Client, m: Message, cc, ka, cc1, prog, count, name, start_time):
     reply = await m.reply_text(f"Uploading - `{name}`")
