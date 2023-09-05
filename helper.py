@@ -121,12 +121,13 @@ async def run(cmd):
     
     
 def old_download(url, file_name, chunk_size=1024 * 10):
+    global start_time, downloaded_bytes
     if os.path.exists(file_name):
         os.remove(file_name)
-
     r = requests.get(url, allow_redirects=True, stream=True)
     total_size = int(r.headers.get('content-length', 0))
 
+    start_time = time.time()
     downloaded_bytes = 0
 
     with open(file_name, 'wb') as fd:
@@ -134,11 +135,20 @@ def old_download(url, file_name, chunk_size=1024 * 10):
             if chunk:
                 fd.write(chunk)
                 downloaded_bytes += len(chunk)
-                download_percentage = (downloaded_bytes / total_size) * 100
-                print(f"\rDownloading: {file_name} - Progress: {download_percentage:.1f}%", end='', flush=True)
+                elapsed_time = time.time() - start_time
 
-    print("\nDownload completed.")
+                if elapsed_time > 0:
+                    download_speed = downloaded_bytes / elapsed_time
+                    remaining_bytes = total_size - downloaded_bytes
+                    eta_seconds = remaining_bytes / download_speed
 
+                    progress_percentage = downloaded_bytes / total_size * 100
+
+                    print(f"Downloading: {file_name}\n"
+                          f"Progress: {progress_percentage:.1f}%\n"
+                          f"Speed: {human_readable_size(download_speed)}/s\n"
+                          f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
+                          f"ETA: {hrt(eta_seconds)}")
     
 
 
