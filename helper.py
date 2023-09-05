@@ -157,22 +157,47 @@ async def download_video(url,cmd, name):
     except FileNotFoundError as exc:
         return os.path.isfile.splitext[0] + "." + "mp4"
 
-async def send_doc(bot: Client, m: Message,cc,ka,cc1,prog,count,name):
+async def send_doc(bot: Client, m: Message, cc, ka, cc1, prog, count, name, start_time):
     reply = await m.reply_text(f"Uploading - `{name}`")
     time.sleep(1)
-    start_time = time.time()
-    await m.reply_document(ka,caption=cc1)
-    count+=1
-    await reply.delete (True)
+
+    # Calculate ETA
+    elapsed_time = time.time() - start_time
+    if elapsed_time > 0:
+        completed_percentage = (count / prog) * 100
+        estimated_total_time = elapsed_time / (completed_percentage / 100)
+        eta = hrt(estimated_total_time - elapsed_time)
+    else:
+        eta = "Calculating ETA..."
+
+    # Calculate download progress
+    download_percentage = (count / prog) * 100
+
+    await m.reply_document(ka, caption=f"{cc1}\nProgress: {download_percentage:.1f}%\nETA: {eta}")
+    count += 1
+    await reply.delete(True)
     time.sleep(1)
     os.remove(ka)
-    time.sleep(3) 
+    time.sleep(3)
 
-async def send_vid(bot: Client, m: Message,cc,filename,thumb,name,prog):
-    
+
+async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, start_time):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:00:12 -vframes 1 "{filename}.jpg"', shell=True)
-    await prog.delete (True)
+    await prog.delete(True)
     reply = await m.reply_text(f"**Uploading ...** - `{name}`")
+
+    # Calculate ETA
+    elapsed_time = time.time() - start_time
+    if elapsed_time > 0:
+        completed_percentage = (os.path.getsize(filename) / os.path.getsize(prog)) * 100
+        estimated_total_time = elapsed_time / (completed_percentage / 100)
+        eta = hrt(estimated_total_time - elapsed_time)
+    else:
+        eta = "Calculating ETA..."
+
+    # Calculate download progress
+    download_percentage = (os.path.getsize(filename) / os.path.getsize(prog)) * 100
+
     try:
         if thumb == "no":
             thumbnail = f"{filename}.jpg"
@@ -183,18 +208,14 @@ async def send_vid(bot: Client, m: Message,cc,filename,thumb,name,prog):
 
     dur = int(duration(filename))
 
-    start_time = time.time()
-
     try:
-        await m.reply_video(filename,caption=cc, supports_streaming=True,height=720,width=1280,thumb=thumbnail,duration=dur, progress=progress_bar,progress_args=(reply,start_time))
+        await m.reply_video(filename, caption=f"{cc}\nProgress: {download_percentage:.1f}%\nETA: {eta}", supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))
     except Exception:
-        await m.reply_document(filename,caption=cc, progress=progress_bar,progress_args=(reply,start_time))
+        await m.reply_document(filename, caption=f"{cc}\nProgress: {download_percentage:.1f}%\nETA: {eta}", progress=progress_bar, progress_args=(reply, start_time))
 
-    
     os.remove(filename)
-
     os.remove(f"{filename}.jpg")
-    await reply.delete (True)
+    await reply.delete(True)
     
 def get_video_attributes(file: str):
     """Returns video duration, width, height"""
