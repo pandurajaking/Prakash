@@ -134,7 +134,20 @@ def old_download(url, file_name, chunk_size=1024 * 10):
                     download_speed = downloaded_bytes / elapsed_time
                     remaining_bytes = total_size - downloaded_bytes
                     eta_seconds = remaining_bytes / download_speed
-                    print(f"Downloaded: {human_readable_size(downloaded_bytes)} / {human_readable_size(total_size)} ETA: {hrt(eta_seconds)}")
+                    print(f"Downloading: {file_name}\n"
+                          f"Progress: {downloaded_bytes/total_size*100:.1f}%\n"
+                          f"Speed: {human_readable_size(download_speed)}/s\n"
+                          f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
+                          f"ETA: {hrt(eta_seconds)}")
+                else:
+                    print(f"Downloading: {file_name}\n"
+                          f"Progress: {downloaded_bytes/total_size*100:.1f}%\n"
+                          f"Speed: Calculating...\n"
+                          f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
+                          f"ETA: Calculating...")
+
+# Rest of your code...
+
 
     
 
