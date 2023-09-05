@@ -16,7 +16,7 @@ wget
 mediainfo
 tqdm
 axel
-curl
+
 PySocks
 loguru
 aiohttp[speedups]>=3.7.3
