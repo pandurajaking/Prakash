@@ -136,7 +136,7 @@ with open(file_name, 'wb') as fd:
                 eta_seconds = remaining_bytes / download_speed
                 print(f"Downloaded: {human_readable_size(downloaded_bytes)} / {human_readable_size(total_size)} ETA: {hrt(eta_seconds)}")
 
-    return file_name
+    
 
 
 def human_readable_size(size, decimal_places=2):
