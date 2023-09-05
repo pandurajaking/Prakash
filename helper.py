@@ -12,6 +12,7 @@ import aiofiles
 from pyrogram.types import Message
 from pyrogram import Client, filters
 from subprocess import getstatusoutput
+from tqdm import tqdm
 start_time = None
 downloaded_bytes = 0
 def hrt(secs):
@@ -120,36 +121,26 @@ async def run(cmd):
     
     
     
-def old_download(url, file_name, chunk_size=1024 * 10):
-    global start_time, downloaded_bytes
+def old_download(url, file_name):
     if os.path.exists(file_name):
         os.remove(file_name)
+
     r = requests.get(url, allow_redirects=True, stream=True)
     total_size = int(r.headers.get('content-length', 0))
 
-    start_time = time.time()
-    downloaded_bytes = 0
+    with open(file_name, 'wb') as fd, tqdm(
+        desc=file_name,
+        total=total_size,
+        unit='B',
+        unit_scale=True,
+        unit_divisor=1024,
+    ) as bar:
+        for data in r.iter_content(chunk_size=1024):
+            bar.update(len(data))
+            fd.write(data)
 
-    with open(file_name, 'wb') as fd:
-        for chunk in r.iter_content(chunk_size=chunk_size):
-            if chunk:
-                fd.write(chunk)
-                downloaded_bytes += len(chunk)
-                elapsed_time = time.time() - start_time
+    print("Download completed.")
 
-                if elapsed_time > 0:
-                    download_speed = downloaded_bytes / elapsed_time
-                    remaining_bytes = total_size - downloaded_bytes
-                    eta_seconds = remaining_bytes / download_speed
-
-                    progress_percentage = downloaded_bytes / total_size * 100
-
-                    print(f"Downloading: {file_name}\n"
-                          f"Progress: {progress_percentage:.1f}%\n"
-                          f"Speed: {human_readable_size(download_speed)}/s\n"
-                          f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
-                          f"ETA: {hrt(eta_seconds)}")
-    
 
 
 def human_readable_size(size, decimal_places=2):
