@@ -142,15 +142,12 @@ def old_download(url, file_name, chunk_size=1024 * 10):
                     remaining_bytes = total_size - downloaded_bytes
                     eta_seconds = remaining_bytes / download_speed
 
-                    progress_percentage = downloaded_bytes / total_size * 100
-                    progress_info = (
-                        f"Progress 📈 -【 {progress_percentage:.1f}% 】 | "
-                        f"Speed 🧲 -【 {human_readable_size(download_speed)}/s 】 | "
-                        f"Size 📂 -【 {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)} 】 | "
-                        f"ETA ⏳ -【 {hrt(eta_seconds)} 】"
-                    )
-                    print(progress_info, end='\r')  # Print on the same line and overwrite
-
+                    print(f"Downloading:\n"
+                          f"Name: {file_name}\n"
+                          f"Progress: {downloaded_bytes/total_size*100:.1f}%\n"
+                          f"Speed: {human_readable_size(download_speed)}/s\n"
+                          f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
+                          f"ETA: {hrt(eta_seconds)}")
                 else:
                     print(f"Downloading:\n"
                           f"Name: {file_name}\n"
@@ -158,9 +155,6 @@ def old_download(url, file_name, chunk_size=1024 * 10):
                           f"Speed: Calculating...\n"
                           f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
                           f"ETA: Calculating...")
-
-# Rest of your code...
-
 
     
 
