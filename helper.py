@@ -12,6 +12,8 @@ import aiofiles
 from pyrogram.types import Message
 from pyrogram import Client, filters
 from subprocess import getstatusoutput
+start_time = None
+downloaded_bytes = 0
 
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
@@ -112,14 +114,28 @@ async def run(cmd):
     
     
     
-def old_download(url, file_name, chunk_size = 1024 * 10):
+def old_download(url, file_name, chunk_size=1024 * 10):
+    global start_time, downloaded_bytes
     if os.path.exists(file_name):
         os.remove(file_name)
     r = requests.get(url, allow_redirects=True, stream=True)
+    total_size = int(r.headers.get('content-length', 0))
+    
+    start_time = time.time()
+    downloaded_bytes = 0
+    
     with open(file_name, 'wb') as fd:
         for chunk in r.iter_content(chunk_size=chunk_size):
             if chunk:
                 fd.write(chunk)
+                downloaded_bytes += len(chunk)
+                elapsed_time = time.time() - start_time
+                if elapsed_time > 0:
+                    download_speed = downloaded_bytes / elapsed_time
+                    remaining_bytes = total_size - downloaded_bytes
+                    eta_seconds = remaining_bytes / download_speed
+                    print(f"Downloaded: {human_readable_size(downloaded_bytes)} / {human_readable_size(total_size)} ETA: {hrt(eta_seconds)}")
+
     return file_name
 
 
