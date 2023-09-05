@@ -21,7 +21,7 @@ import aiohttp
 import asyncio
 import aiofiles
 from pyrogram.types import User, Message
-# import progressor
+##import progressor
 # from progressor import progress_for_pyrogram
 import sys
 import re
