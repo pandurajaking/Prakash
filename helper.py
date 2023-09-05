@@ -121,40 +121,23 @@ async def run(cmd):
     
     
 def old_download(url, file_name, chunk_size=1024 * 10):
-    global start_time, downloaded_bytes
     if os.path.exists(file_name):
         os.remove(file_name)
+
     r = requests.get(url, allow_redirects=True, stream=True)
     total_size = int(r.headers.get('content-length', 0))
 
-    start_time = time.time()
     downloaded_bytes = 0
 
-    for chunk in r.iter_content(chunk_size=chunk_size):
-        if chunk:
-            with open(file_name, 'ab') as fd:
+    with open(file_name, 'wb') as fd:
+        for chunk in r.iter_content(chunk_size=chunk_size):
+            if chunk:
                 fd.write(chunk)
                 downloaded_bytes += len(chunk)
-                elapsed_time = time.time() - start_time
+                download_percentage = (downloaded_bytes / total_size) * 100
+                print(f"\rDownloading: {file_name} - Progress: {download_percentage:.1f}%", end='', flush=True)
 
-                if elapsed_time > 0:
-                    download_speed = downloaded_bytes / elapsed_time
-                    remaining_bytes = total_size - downloaded_bytes
-                    eta_seconds = remaining_bytes / download_speed
-
-                    print(f"Downloading:\n"
-                          f"Name: {file_name}\n"
-                          f"Progress: {downloaded_bytes/total_size*100:.1f}%\n"
-                          f"Speed: {human_readable_size(download_speed)}/s\n"
-                          f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
-                          f"ETA: {hrt(eta_seconds)}")
-                else:
-                    print(f"Downloading:\n"
-                          f"Name: {file_name}\n"
-                          f"Progress: {downloaded_bytes/total_size*100:.1f}%\n"
-                          f"Speed: Calculating...\n"
-                          f"Size: {human_readable_size(downloaded_bytes)}/{human_readable_size(total_size)}\n"
-                          f"ETA: Calculating...")
+    print("\nDownload completed.")
 
     
 
