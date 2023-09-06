@@ -32,3 +32,5 @@ pycryptodome
 soupsieve
 urllib3
 websockets
+pydrive
+gdown
