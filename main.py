@@ -30,6 +30,7 @@ import io
 import logging
 #import pycurl
 import yt_dlp
+import urllib3
 import wget
 import details  # Import variables from details.py
 
@@ -913,7 +914,7 @@ async def account_login(bot: Client, m: Message):
                     'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTI4MDg3NzUsImV4cCI6MTY5MzQxMzU3NX0.FIrcF7Fp5ryth1DKDTQsGKvNGi4vjTJSorznF8F77v2ttJFxZ2FeomkDPQwBQDfx',
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.69',
-                    'api-version': '18',
+                    'api-version': '24',
                     'device-id': 'c28d3cb16bbdac01',
                     'device-details':
                     'Xiaomi_Redmi 7_SDK-32',
