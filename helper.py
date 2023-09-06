@@ -12,15 +12,6 @@ import aiofiles
 from pyrogram.types import Message
 from pyrogram import Client, filters
 from subprocess import getstatusoutput
-from tqdm import tqdm
-start_time = None
-downloaded_bytes = 0
-def hrt(secs):
-    mins, secs = divmod(secs, 60)
-    hours, mins = divmod(mins, 60)
-    return f"{int(hours):02d}:{int(mins):02d}:{int(secs):02d}"
-
-
 
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
@@ -121,26 +112,15 @@ async def run(cmd):
     
     
     
-def old_download(url, file_name):
+def old_download(url, file_name, chunk_size = 1024 * 10):
     if os.path.exists(file_name):
         os.remove(file_name)
-
     r = requests.get(url, allow_redirects=True, stream=True)
-    total_size = int(r.headers.get('content-length', 0))
-
-    with open(file_name, 'wb') as fd, tqdm(
-        desc=file_name,
-        total=total_size,
-        unit='B',
-        unit_scale=True,
-        unit_divisor=1024,
-    ) as bar:
-        for data in r.iter_content(chunk_size=1024):
-            bar.update(len(data))
-            fd.write(data)
-
-    print("Download completed.")
-
+    with open(file_name, 'wb') as fd:
+        for chunk in r.iter_content(chunk_size=chunk_size):
+            if chunk:
+                fd.write(chunk)
+    return file_name
 
 
 def human_readable_size(size, decimal_places=2):
@@ -157,82 +137,42 @@ def time_name():
     current_time = now.strftime("%H%M%S")
     return f"{date} {current_time}.mp4"
 
-
-async def download_video(url, cmd, name):
+async def download_video(url,cmd, name):
     download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
+    k = os.system(download_cmd)
     try:
-        # Execute the download command asynchronously
-        proc = await asyncio.create_subprocess_shell(
-            download_cmd,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE
-        )
-
-        # Wait for the download to complete
-        _, stderr = await proc.communicate()
-
-        if proc.returncode == 0:
-            # Check if the downloaded file exists
-            if os.path.isfile(name):
-                return name
-            elif os.path.isfile(f"{name}.webm"):
-                return f"{name}.webm"
-            name = name.split(".")[0]
-            if os.path.isfile(f"{name}.mkv"):
-                return f"{name}.mkv"
-            elif os.path.isfile(f"{name}.mp4"):
-                return f"{name}.mp4"
-            elif os.path.isfile(f"{name}.mp4.webm"):
-                return f"{name}.mp4.webm"
+        if os.path.isfile(name):
             return name
-        else:
-            print(f"Download failed with error: {stderr.decode()}")
-            return None  # Handle the download failure
-    except Exception as e:
-        print(f"Error in download_video: {str(e)}")
-        return None  # Handle any other exceptions
+        elif os.path.isfile(f"{name}.webm"):
+            return f"{name}.webm"
+        name = name.split(".")[0]
+        if os.path.isfile(f"{name}.mkv"):
+            return f"{name}.mkv"
+        elif os.path.isfile(f"{name}.mp4"):
+            return f"{name}.mp4"
+        elif os.path.isfile(f"{name}.mp4.webm"):
+            return f"{name}.mp4.webm"
 
-async def send_doc(bot: Client, m: Message, cc, ka, cc1, prog, count, name, start_time):
+        return name
+    except FileNotFoundError as exc:
+        return os.path.isfile.splitext[0] + "." + "mp4"
+
+async def send_doc(bot: Client, m: Message,cc,ka,cc1,prog,count,name):
     reply = await m.reply_text(f"Uploading - `{name}`")
     time.sleep(1)
-
-    # Calculate ETA
-    elapsed_time = time.time() - start_time
-    if elapsed_time > 0:
-        completed_percentage = (count / prog) * 100
-        estimated_total_time = elapsed_time / (completed_percentage / 100)
-        eta = hrt(estimated_total_time - elapsed_time)
-    else:
-        eta = "Calculating ETA..."
-
-    # Calculate download progress
-    download_percentage = (count / prog) * 100
-
-    await m.reply_document(ka, caption=f"{cc1}\nProgress: {download_percentage:.1f}%\nETA: {eta}")
-    count += 1
-    await reply.delete(True)
+    start_time = time.time()
+    await m.reply_document(ka,caption=cc1)
+    count+=1
+    await reply.delete (True)
     time.sleep(1)
     os.remove(ka)
-    time.sleep(3)
+    time.sleep(3) 
 
-
-async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, start_time):
+async def send_vid(bot: Client, m: Message,cc,filename,thumb,name,prog):
+    
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:00:12 -vframes 1 "{filename}.jpg"', shell=True)
-    await prog.delete(True)
+    await prog.delete (True)
     reply = await m.reply_text(f"**Uploading ...** - `{name}`")
-
-    # Calculate ETA
-    elapsed_time = time.time() - start_time
-    if elapsed_time > 0:
-        completed_percentage = (os.path.getsize(filename) / os.path.getsize(prog)) * 100
-        estimated_total_time = elapsed_time / (completed_percentage / 100)
-        eta = hrt(estimated_total_time - elapsed_time)
-    else:
-        eta = "Calculating ETA..."
-
-    # Calculate download progress
-    download_percentage = (os.path.getsize(filename) / os.path.getsize(prog)) * 100
-
     try:
         if thumb == "no":
             thumbnail = f"{filename}.jpg"
@@ -243,14 +183,18 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, sta
 
     dur = int(duration(filename))
 
-    try:
-        await m.reply_video(filename, caption=f"{cc}\nProgress: {download_percentage:.1f}%\nETA: {eta}", supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))
-    except Exception:
-        await m.reply_document(filename, caption=f"{cc}\nProgress: {download_percentage:.1f}%\nETA: {eta}", progress=progress_bar, progress_args=(reply, start_time))
+    start_time = time.time()
 
+    try:
+        await m.reply_video(filename,caption=cc, supports_streaming=True,height=720,width=1280,thumb=thumbnail,duration=dur, progress=progress_bar,progress_args=(reply,start_time))
+    except Exception:
+        await m.reply_document(filename,caption=cc, progress=progress_bar,progress_args=(reply,start_time))
+
+    
     os.remove(filename)
+
     os.remove(f"{filename}.jpg")
-    await reply.delete(True)
+    await reply.delete (True)
     
 def get_video_attributes(file: str):
     """Returns video duration, width, height"""
