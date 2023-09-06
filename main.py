@@ -441,35 +441,50 @@ async def account_login(bot: Client, m: Message):
                 #                         time.sleep(e.x)
                 #                         continue
                 if cmd == "pdf" or ".pdf" in url or ".pdf" in name:
-                    try:
-                        ka = await helper.aio(url, name)
-                        await prog.delete(True)
-                        time.sleep(1)
-                        reply = await m.reply_text(f"Uploading - ```{name}```")
-                        time.sleep(1)
-                        start_time = time.time()
-                        await m.reply_document(
-                            ka,
-                            caption=
-                            f"**Name »** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                       ▄︻┻┳═一STUDEŊT乡✓"
-                        )
-                        count += 1
-                        # time.sleep(1)
-                        await reply.delete(True)
-                        time.sleep(1)
-                        os.remove(ka)
-                        time.sleep(3)
-                    except FloodWait as e:
-                        await m.reply_text(str(e))
-                        time.sleep(e.x)
-                        continue
-                else:
-                    res_file = await helper.download_video(url, cmd, name)
-                    filename = res_file
-                    await helper.send_vid(bot, m, cc, filename, thumb, name,
-                                          prog)
-                    count += 1
-                    time.sleep(1)
+    try:
+        # Check if it's a Google Drive link
+        if is_google_drive_url(url):
+            # Handle Google Drive links differently
+            # You can use a library like gdown to download files from Google Drive
+            # Example:
+            import gdown
+
+            gdown.download(url, output=name1)
+            ka = name1  # Now 'ka' contains the downloaded file (name1)
+        else:
+            # Handle other PDFs using your existing PDF download logic here
+            ka = await helper.aio(url, name)
+
+        await prog.delete(True)
+        time.sleep(1)
+        reply = await m.reply_text(f"Uploading - ```{name}```")
+        time.sleep(1)
+        start_time = time.time()
+        await m.reply_document(
+            ka,
+            caption=f"**Name »** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                       ▄︻┻┳═一STUDEŊT乡✓"
+        )
+        count += 1
+        # time.sleep(1)
+        await reply.delete(True)
+        time.sleep(1)
+        if is_google_drive_url(url):
+            # If it's a Google Drive link, remove the downloaded file
+            os.remove(ka)
+        else:
+            # If it's not a Google Drive link, remove the downloaded temporary file
+            os.remove(ka)
+            time.sleep(3)
+    except FloodWait as e:
+        await m.reply_text(str(e))
+        time.sleep(e.x)
+        continue
+else:
+    res_file = await helper.download_video(url, cmd, name)
+    filename = res_file
+    await helper.send_vid(bot, m, cc, filename, thumb, name, prog)
+    count += 1
+    time.sleep(1)
 
             except Exception as e:
                 await m.reply_text(
