@@ -37,33 +37,19 @@ def retry(func):
 
 
 
-
-def get_duration(filename):
+def duration(filename):
     try:
-        if not os.path.exists(filename):
-            raise FileNotFoundError("File not found")
-
-        command = [
-            "ffprobe",
-            "-v", "error",
-            "-show_entries", "format=duration",
-            "-of", "default=noprint_wrappers=1:nokey=1",
-            filename
-        ]
-
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-
-        if result.stderr:
-            # Check for any errors in the stderr output
-            raise Exception(f"Error from ffprobe: {result.stderr.strip()}")
-
-        return float(result.stdout.strip())
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        raise Exception(f"Error while running ffprobe: {str(e)}")
+        result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                 "format=duration", "-of",
+                                 "default=noprint_wrappers=1:nokey=1", filename],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                check=True, text=True)
+        return float(result.stdout)
+    except subprocess.CalledProcessError as e:
+        raise Exception(f"Error while running ffprobe: {e.stdout}")
     except ValueError:
         raise Exception("Unable to parse duration as a float")
-
-
 @retry
 async def aio(url, name):
     k = f'{name}.pdf'
