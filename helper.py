@@ -201,11 +201,13 @@ async def download_video(url, cmd, name):
                 return f"{name}.mp4.webm"
             return name
         else:
-            print(f"Download failed with error: {stderr.decode()}")
+            error_msg = stderr.decode() if stderr else "No error message available"
+            logging.error(f"Download failed with error: {error_msg}")
             return None  # Handle the download failure
     except Exception as e:
-        print(f"Error in download_video: {str(e)}")
+        logging.error(f"Error in download_video: {str(e)}")
         return None  # Handle any other exceptions
+
 @retry
 async def send_doc(bot: Client, m: Message, cc, ka, cc1, prog, count, name):
     reply = await m.reply_text(f"Uploading - `{name}`")
