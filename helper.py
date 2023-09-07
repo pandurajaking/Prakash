@@ -3,7 +3,6 @@ import datetime
 import json
 import asyncio
 import os
-
 import requests
 import time
 from p_bar import progress_bar
@@ -39,31 +38,22 @@ def retry(func):
 
 def get_video_duration(filename):
     try:
-        # Use ffprobe to get video duration
-        result = subprocess.run(
-            ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of",
-             "default=noprint_wrappers=1:nokey=1", filename],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True  # Ensure output is in text format
-        )
+        # Run ffprobe as a subprocess
+        process = subprocess.Popen(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
-        if result.returncode == 0:
-            duration_str = result.stdout.strip()
-            if duration_str:
-                # Convert the duration string to a float
-                duration = float(duration_str)
-                return duration
-            else:
-                print("Duration string is empty.")
-        else:
-            print("ffprobe returned an error.")
-            print(result.stderr)
+        # Read the output line by line
+        for line in process.stdout:
+            # Check if the line contains the duration information
+            if line.startswith("duration="):
+                duration_str = line.strip().split('=')[1]
+                return float(duration_str)
+
+        # If duration is not found, return None
+        return None
     except Exception as e:
-        print(f"An error occurred: {e}")
-    
-    # Return None in case of errors or if the duration couldn't be obtained
-    return None
+        # Handle any exceptions that may occur during the process
+        print(f"Error: {e}")
+        return None
 @retry
 async def aio(url, name):
     k = f'{name}.pdf'
