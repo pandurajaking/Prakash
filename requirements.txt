@@ -35,3 +35,7 @@ websockets
 pydrive
 gdown
 ffmpeg-python
+aria2p
+aria2r
+ffprobe
+ffprobe-python
