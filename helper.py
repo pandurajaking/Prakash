@@ -23,21 +23,15 @@ def duration(filename):
         stderr=subprocess.STDOUT)
     return float(result.stdout)
 
-async def aio(url, name):
+async def aio(url,name):
     k = f'{name}.pdf'
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
-            if resp and resp.status == 200:
-                try:
-                    f = await aiofiles.open(k, mode='wb')
-                    await f.write(await resp.read())
-                    await f.close()
-                    return k
-                except Exception as e:
-                    print(f"Error writing file: {e}")
-            else:
-                print("Download failed. Response is not valid.")
-    return None
+            if resp.status == 200:
+                f = await aiofiles.open(k, mode='wb')
+                await f.write(await resp.read())
+                await f.close()
+    return k
 
 
 async def download(url,name):
@@ -187,16 +181,16 @@ async def download_video(url, cmd, name):
     except Exception as e:
         print(f"Error in download_video: {str(e)}")
         return None  # Handle any other exceptions
-async def send_doc(bot: Client, m: Message, cc, ka, cc1, prog, count, name):
+async def send_doc(bot: Client, m: Message,cc,ka,cc1,prog,count,name):
     reply = await m.reply_text(f"Uploading - `{name}`")
     time.sleep(1)
-    if ka:
-        await m.reply_document(ka, caption=cc1)
-        count += 1
-        await reply.delete(True)
-        time.sleep(1)
-        os.remove(ka)
-        time.sleep(3)
+    start_time = time.time()
+    await m.reply_document(ka,caption=cc1)
+    count+=1
+    await reply.delete (True)
+    time.sleep(1)
+    os.remove(ka)
+    time.sleep(3) 
 
 async def send_vid(bot: Client, m: Message,cc,filename,thumb,name,prog):
     
