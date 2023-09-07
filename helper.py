@@ -23,15 +23,21 @@ def duration(filename):
         stderr=subprocess.STDOUT)
     return float(result.stdout)
 
-async def aio(url,name):
+async def aio(url, name):
     k = f'{name}.pdf'
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
-            if resp.status == 200:
-                f = await aiofiles.open(k, mode='wb')
-                await f.write(await resp.read())
-                await f.close()
-    return k
+            if resp and resp.status == 200:
+                try:
+                    f = await aiofiles.open(k, mode='wb')
+                    await f.write(await resp.read())
+                    await f.close()
+                    return k
+                except Exception as e:
+                    print(f"Error writing file: {e}")
+            else:
+                print("Download failed. Response is not valid.")
+    return None
 
 
 async def download(url,name):
