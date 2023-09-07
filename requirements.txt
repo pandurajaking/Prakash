@@ -16,7 +16,7 @@ wget
 mediainfo
 tqdm
 axel
-moviepy
+beautifulsoup4
 PySocks
 loguru
 aiohttp[speedups]>=3.7.3
