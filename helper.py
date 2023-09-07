@@ -3,7 +3,8 @@ import datetime
 import json
 import asyncio
 import os
-import shlex
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+from moviepy.editor import VideoFileClip
 import requests
 import time
 from p_bar import progress_bar
@@ -38,13 +39,10 @@ def retry(func):
 
 def get_video_duration(filename):
     try:
-        cmd = f'ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "{filename}"'
-        result = subprocess.run(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-        if result.returncode == 0:
-            duration_str = result.stdout.strip()
-            return float(duration_str)
-        else:
-            print(f"Error running ffprobe: {result.stderr}")
+        video = VideoFileClip(filename)
+        duration = video.duration
+        video.close()
+        return duration
     except Exception as e:
         print(f"An error occurred: {e}")
     return None
