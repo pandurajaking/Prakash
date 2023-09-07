@@ -34,3 +34,4 @@ urllib3
 websockets
 pydrive
 gdown
+ffmpeg-python
