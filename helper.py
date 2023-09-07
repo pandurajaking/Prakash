@@ -35,14 +35,18 @@ def retry(func):
 
 
 
-def duration(filename):
-    result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
-                             "format=duration", "-of",
-                             "default=noprint_wrappers=1:nokey=1", filename],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT)
-    return float(result.stdout)
-
+def get_video_duration(filename):
+    try:
+        cmd = f'ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "{filename}"'
+        result = subprocess.run(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+        if result.returncode == 0:
+            duration_str = result.stdout.strip()
+            return float(duration_str)
+        else:
+            print(f"Error running ffprobe: {result.stderr}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    return None
 @retry
 async def aio(url, name):
     k = f'{name}.pdf'
