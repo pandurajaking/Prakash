@@ -34,7 +34,7 @@ def retry(func):
 
 
 
-@retry
+
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
                              "format=duration", "-of",
