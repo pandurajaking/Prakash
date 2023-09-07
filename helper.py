@@ -13,8 +13,28 @@ from pyrogram.types import Message
 from pyrogram import Client, filters
 from subprocess import getstatusoutput
 from tqdm import tqdm
+MAX_RETRIES = 5
+
+def retry(func):
+    async def wrapper(*args, **kwargs):
+        for attempt in range(MAX_RETRIES):
+            try:
+                if asyncio.iscoroutinefunction(func):
+                    result = await func(*args, **kwargs)
+                else:
+                    result = func(*args, **kwargs)
+                return result
+            except Exception as e:
+                print(f"Attempt {attempt + 1} failed with error: {e}")
+                if attempt < MAX_RETRIES - 1:
+                    print("Retrying...")
+                else:
+                    raise
+    return wrapper
 
 
+
+@retry
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
                              "format=duration", "-of",
@@ -23,7 +43,8 @@ def duration(filename):
         stderr=subprocess.STDOUT)
     return float(result.stdout)
 
-async def aio(url,name):
+@retry
+async def aio(url, name):
     k = f'{name}.pdf'
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
@@ -34,7 +55,8 @@ async def aio(url,name):
     return k
 
 
-async def download(url,name):
+@retry
+async def download(url, name):
     ka = f'{name}.pdf'
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
@@ -43,6 +65,7 @@ async def download(url,name):
                 await f.write(await resp.read())
                 await f.close()
     return ka
+
 
 
 
@@ -95,6 +118,7 @@ def vid_info(info):
 
 
 
+@retry
 async def run(cmd):
     proc = await asyncio.create_subprocess_shell(
         cmd,
@@ -148,6 +172,7 @@ def time_name():
     current_time = now.strftime("%H%M%S")
     return f"{date} {current_time}.mp4"
 
+@retry
 async def download_video(url, cmd, name):
     download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
     try:
@@ -181,21 +206,22 @@ async def download_video(url, cmd, name):
     except Exception as e:
         print(f"Error in download_video: {str(e)}")
         return None  # Handle any other exceptions
-async def send_doc(bot: Client, m: Message,cc,ka,cc1,prog,count,name):
+@retry
+async def send_doc(bot: Client, m: Message, cc, ka, cc1, prog, count, name):
     reply = await m.reply_text(f"Uploading - `{name}`")
     time.sleep(1)
     start_time = time.time()
-    await m.reply_document(ka,caption=cc1)
-    count+=1
-    await reply.delete (True)
+    await m.reply_document(ka, caption=cc1)
+    count += 1
+    await reply.delete(True)
     time.sleep(1)
     os.remove(ka)
-    time.sleep(3) 
-
-async def send_vid(bot: Client, m: Message,cc,filename,thumb,name,prog):
+    time.sleep(3)
     
+@retry
+async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:00:12 -vframes 1 "{filename}.jpg"', shell=True)
-    await prog.delete (True)
+    await prog.delete(True)
     reply = await m.reply_text(f"**Uploading ...** - `{name}`")
     try:
         if thumb == "no":
@@ -210,15 +236,13 @@ async def send_vid(bot: Client, m: Message,cc,filename,thumb,name,prog):
     start_time = time.time()
 
     try:
-        await m.reply_video(filename,caption=cc, supports_streaming=True,height=720,width=1280,thumb=thumbnail,duration=dur, progress=progress_bar,progress_args=(reply,start_time))
+        await m.reply_video(filename, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))
     except Exception:
-        await m.reply_document(filename,caption=cc, progress=progress_bar,progress_args=(reply,start_time))
+        await m.reply_document(filename, caption=cc, progress=progress_bar, progress_args=(reply, start_time))
 
-    
     os.remove(filename)
-
     os.remove(f"{filename}.jpg")
-    await reply.delete (True)
+    await reply.delete(True)
     
 def get_video_attributes(file: str):
     """Returns video duration, width, height"""
