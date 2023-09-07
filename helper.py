@@ -9,6 +9,7 @@ from p_bar import progress_bar
 import aiohttp
 import tgcrypto
 import aiofiles
+import helper
 from pyrogram.types import Message
 from pyrogram import Client, filters
 from subprocess import getstatusoutput
@@ -36,24 +37,19 @@ def retry(func):
 
 
 
-def get_video_duration(filename):
+def duration(filename):
     try:
-        # Run ffprobe as a subprocess
-        process = subprocess.Popen(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-
-        # Read the output line by line
-        for line in process.stdout:
-            # Check if the line contains the duration information
-            if line.startswith("duration="):
-                duration_str = line.strip().split('=')[1]
-                return float(duration_str)
-
-        # If duration is not found, return None
-        return None
-    except Exception as e:
-        # Handle any exceptions that may occur during the process
-        print(f"Error: {e}")
-        return None
+        result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                 "format=duration", "-of",
+                                 "default=noprint_wrappers=1:nokey=1", filename],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                check=True, text=True)
+        return float(result.stdout)
+    except subprocess.CalledProcessError as e:
+        raise Exception(f"Error while running ffprobe: {e.stdout}")
+    except ValueError:
+        raise Exception("Unable to parse duration as a float")
 @retry
 async def aio(url, name):
     k = f'{name}.pdf'
