@@ -180,10 +180,10 @@ async def account_login(bot: Client, m: Message):
                 links.append((name, url))
         os.remove(x)
 # print(len(links))
-        except:
-            await m.reply_text("Invalid file input.")
-            os.remove(x)
-            return
+    except:
+        await m.reply_text("Invalid file input.")
+        os.remove(x)
+        return
 
 
     editable = await m.reply_text(
@@ -853,10 +853,10 @@ async def account_login(bot: Client, m: Message):
                 links.append((name, url))
         os.remove(x)
 # print(len(links))
-        except:
-            await m.reply_text("Invalid file input.")
-            os.remove(x)
-            return
+    except:
+        await m.reply_text("Invalid file input.")
+        os.remove(x)
+        return
 
     editable = await m.reply_text(
         f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**"
