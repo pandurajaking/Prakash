@@ -39,18 +39,29 @@ def retry(func):
 
 
 def duration(filename):
-    try:
-        result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
-                                 "format=duration", "-of",
-                                 "default=noprint_wrappers=1:nokey=1", filename],
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT,
-                                check=True, text=True)
-        return float(result.stdout)
-    except subprocess.CalledProcessError as e:
-        raise Exception(f"Error while running ffprobe: {e.stdout}")
-    except ValueError:
-        raise Exception("Unable to parse duration as a float")
+    for attempt in range(MAX_RETRIES):
+        try:
+            result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                     "format=duration", "-of",
+                                     "default=noprint_wrappers=1:nokey=1", filename],
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT,
+                                    check=True, text=True)
+            return float(result.stdout)
+        except subprocess.CalledProcessError as e:
+            print(f"Attempt {attempt + 1} failed with error: {e.stdout}")
+            if attempt < MAX_RETRIES - 1:
+                print("Retrying...")
+                time.sleep(1)  # Add a delay before retrying
+            else:
+                raise
+        except ValueError:
+            print(f"Attempt {attempt + 1} failed: Unable to parse duration as a float")
+            if attempt < MAX_RETRIES - 1:
+                print("Retrying...")
+                time.sleep(1)  # Add a delay before retrying
+            else:
+                raise
 @retry
 async def aio(url, name):
     k = f'{name}.pdf'
