@@ -21,7 +21,7 @@ import aiohttp
 import asyncio
 import aiofiles
 from pyrogram.types import User, Message
-#import progressor
+## import progressor
 # from progressor import progress_for_pyrogram
 import sys
 import re
@@ -30,8 +30,6 @@ import io
 import logging
 #import pycurl
 import yt_dlp
-import urllib3
-import wget
 import details  # Import variables from details.py
 
 # Now you can access the variables as attributes of the details module
@@ -70,7 +68,7 @@ bot = Client("bot",
              bot_token=details.bot_token)
 auth_users = [1085174050,5934830127,6046547078]
 sudo_users = auth_users
-sudo_groups = [-1001925087804]
+sudo_groups = [-1001663303433,-972255653]
 
 shell_usage = f"**USAGE:** Executes terminal commands directly via bot.\n\n<pre>/shell pip install requests</pre>"
 def one(user_id):
@@ -170,14 +168,8 @@ async def account_login(bot: Client, m: Message):
             content = f.read()
         content = content.split("\n")
         links = []
-        for line in content:
-    # Use regular expressions to extract URLs starting with http or https
-            matches = re.findall(r'\bhttps?://\S+', line)
-            if matches:
-                url = matches[0]  # Take the first detected URL
-                # Remove the URL part from the line to get the name
-                name = line.replace(url, "").strip()
-                links.append((name, url))
+        for i in content:
+            links.append(i.split(":",1)) 
         os.remove(x)
         # print(len(links))
     except:
@@ -842,14 +834,8 @@ async def account_login(bot: Client, m: Message):
             content = f.read()
         content = content.split("\n")
         links = []
-        for line in content:
-    # Use regular expressions to extract URLs starting with http or https
-            matches = re.findall(r'\bhttps?://\S+', line)
-            if matches:
-                url = matches[0]  # Take the first detected URL
-                # Remove the URL part from the line to get the name
-                name = line.replace(url, "").strip()
-                links.append((name, url))
+        for i in content:
+            links.append(i.split(":", 1))
         os.remove(x)
         # print(len(links))
     except:
@@ -911,10 +897,10 @@ async def account_login(bot: Client, m: Message):
                 headers = {
                     'Host': 'api.classplusapp.com',
                     'x-access-token':
-                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
+                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTI4MDg3NzUsImV4cCI6MTY5MzQxMzU3NX0.FIrcF7Fp5ryth1DKDTQsGKvNGi4vjTJSorznF8F77v2ttJFxZ2FeomkDPQwBQDfx',
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.69',
-                    'api-version': '24',
+                    'api-version': '21',
                     'device-id': 'c28d3cb16bbdac01',
                     'device-details':
                     'Xiaomi_Redmi 7_SDK-32',
