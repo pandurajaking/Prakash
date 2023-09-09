@@ -65,13 +65,29 @@ async def aio(url, name):
 @retry
 async def download(url, name):
     ka = f'{name}.pdf'
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            if resp.status == 200:
-                f = await aiofiles.open(ka, mode='wb')
-                await f.write(await resp.read())
-                await f.close()
-    return ka
+    max_retries = 5  # Set the maximum number of retries to 5
+    for retry_count in range(max_retries):  # Retry up to 5 times
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                if resp.status == 200:
+                    try:
+                        f = await aiofiles.open(ka, mode='wb')
+                        await f.write(await resp.read())
+                        await f.close()
+                        return ka  # Return the downloaded file path
+                    except Exception as e:
+                        print(f"Error during 'write' operation: {e}")
+                        # Handle the error condition, you can log or raise an exception here
+                else:
+                    print(f"Download failed with status code: {resp.status}")
+                    # Handle the download failure, you can log or raise an exception here
+
+        # Sleep for a moment before retrying
+        await asyncio.sleep(5)
+
+    # If all retries fail, return None (or another appropriate value)
+    return None
+
 
 
 
