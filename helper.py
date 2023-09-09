@@ -104,53 +104,64 @@ async def download(url, name):
 
 
 
-def parse_vid_info(info):
-    info = info.strip()
-    info = info.split("\n")
-    new_info = []
-    temp = []
-    for i in info:
-        i = str(i)
-        if "[" not in i and '---' not in i:
-            while "  " in i:
-                i = i.replace("  ", " ")
-            i.strip()
-            i = i.split("|")[0].split(" ",2)
-            try:
-                if "RESOLUTION" not in i[2] and i[2] not in temp and "audio" not in i[2]:
-                    temp.append(i[2])
-                    new_info.append((i[0], i[2]))
-            except:
-                pass
-    return new_info
 
+def retry_parse_vid_info(info):
+    for attempt in range(MAX_RETRIES):
+        try:
+            info = info.strip()
+            info = info.split("\n")
+            new_info = []
+            temp = []
+            for i in info:
+                i = str(i)
+                if "[" not in i and '---' not in i:
+                    while "  " in i:
+                        i = i.replace("  ", " ")
+                    i.strip()
+                    i = i.split("|")[0].split(" ", 2)
+                    try:
+                        if "RESOLUTION" not in i[2] and i[2] not in temp and "audio" not in i[2]:
+                            temp.append(i[2])
+                            new_info.append((i[0], i[2]))
+                    except:
+                        pass
+            return new_info
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed with error: {e}")
+            if attempt < MAX_RETRIES - 1:
+                print("Retrying...")
+                time.sleep(1)  # Add a delay before retrying
+            else:
+                raise  # Raise an exception after max retries
 
-def vid_info(info):
-    info = info.strip()
-    info = info.split("\n")
-    new_info = dict()
-    temp = []
-    for i in info:
-        i = str(i)
-        if "[" not in i and '---' not in i:
-            while "  " in i:
-                i = i.replace("  ", " ")
-            i.strip()
-            i = i.split("|")[0].split(" ",3)
-            try:
-                if "RESOLUTION" not in i[2] and i[2] not in temp and "audio" not in i[2]:
-                    temp.append(i[2])
-                    
-                    # temp.update(f'{i[2]}')
-                    # new_info.append((i[2], i[0]))
-                    #  mp4,mkv etc ==== f"({i[1]})" 
-                    
-                    new_info.update({f'{i[2]}':f'{i[0]}'})
-
-            except:
-                pass
-    return new_info
-
+def retry_vid_info(info):
+    for attempt in range(MAX_RETRIES):
+        try:
+            info = info.strip()
+            info = info.split("\n")
+            new_info = dict()
+            temp = []
+            for i in info:
+                i = str(i)
+                if "[" not in i and '---' not in i:
+                    while "  " in i:
+                        i = i.replace("  ", " ")
+                    i.strip()
+                    i = i.split("|")[0].split(" ", 3)
+                    try:
+                        if "RESOLUTION" not in i[2] and i[2] not in temp and "audio" not in i[2]:
+                            temp.append(i[2])
+                            new_info.update({f'{i[2]}': f'{i[0]}'})
+                    except:
+                        pass
+            return new_info
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed with error: {e}")
+            if attempt < MAX_RETRIES - 1:
+                print("Retrying...")
+                time.sleep(1)  # Add a delay before retrying
+            else:
+                raise  # Raise an exception after max retries
 
 
 @retry
@@ -173,40 +184,66 @@ async def run(cmd):
     
     
     
-def old_download(url, file_name):
-    if os.path.exists(file_name):
-        os.remove(file_name)
+def retry_old_download(url, file_name):
+    for attempt in range(MAX_RETRIES):
+        try:
+            if os.path.exists(file_name):
+                os.remove(file_name)
 
-    r = requests.get(url, allow_redirects=True, stream=True)
-    total_size = int(r.headers.get('content-length', 0))
+            r = requests.get(url, allow_redirects=True, stream=True)
+            total_size = int(r.headers.get('content-length', 0))
 
-    with open(file_name, 'wb') as fd, tqdm(
-        desc=file_name,
-        total=total_size,
-        unit='B',
-        unit_scale=True,
-        unit_divisor=1024,
-    ) as bar:
-        for data in r.iter_content(chunk_size=1024):
-            bar.update(len(data))
-            fd.write(data)
+            with open(file_name, 'wb') as fd, tqdm(
+                desc=file_name,
+                total=total_size,
+                unit='B',
+                unit_scale=True,
+                unit_divisor=1024,
+            ) as bar:
+                for data in r.iter_content(chunk_size=1024):
+                    bar.update(len(data))
+                    fd.write(data)
 
-    print("Download completed.")
+            print("Download completed.")
+            return  # Successful download, exit the loop
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed with error: {e}")
+            if attempt < MAX_RETRIES - 1:
+                print("Retrying...")
+                time.sleep(1)  # Add a delay before retrying
+            else:
+                raise  #
 
-def human_readable_size(size, decimal_places=2):
-    for unit in ['B', 'KB', 'MB', 'GB', 'TB', 'PB']:
-        if size < 1024.0 or unit == 'PB':
-            break
-        size /= 1024.0
-    return f"{size:.{decimal_places}f} {unit}"
+def retry_human_readable_size(size, decimal_places=2):
+    for attempt in range(MAX_RETRIES):
+        try:
+            for unit in ['B', 'KB', 'MB', 'GB', 'TB', 'PB']:
+                if size < 1024.0 or unit == 'PB':
+                    break
+                size /= 1024.0
+            return f"{size:.{decimal_places}f} {unit}"
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed with error: {e}")
+            if attempt < MAX_RETRIES - 1:
+                print("Retrying...")
+                time.sleep(1)  # Add a delay before retrying
+            else:
+                raise  # Raise an exception after max retries
 
-
-def time_name():
-    date = datetime.date.today()
-    now = datetime.datetime.now()
-    current_time = now.strftime("%H%M%S")
-    return f"{date} {current_time}.mp4"
-
+def retry_time_name():
+    for attempt in range(MAX_RETRIES):
+        try:
+            date = datetime.date.today()
+            now = datetime.datetime.now()
+            current_time = now.strftime("%H%M%S")
+            return f"{date} {current_time}.mp4"
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed with error: {e}")
+            if attempt < MAX_RETRIES - 1:
+                print("Retrying...")
+                time.sleep(1)  # Add a delay before retrying
+            else:
+                raise  # Raise an exception after max retries
 @retry
 async def download_video(url, cmd, name):
     download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
@@ -290,20 +327,27 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog):
     await reply.delete(True)
 
     
-def get_video_attributes(file: str):
-    """Returns video duration, width, height"""
+def retry_get_video_attributes(file: str):
+    for attempt in range(MAX_RETRIES):
+        try:
+            class FFprobeAttributesError(Exception):
+                """Exception if ffmpeg fails to generate attributes"""
 
-    class FFprobeAttributesError(Exception):
-        """Exception if ffmpeg fails to generate attributes"""
-
-    cmd = (
-        "ffprobe -v error -show_entries format=duration "
-        + "-of default=noprint_wrappers=1:nokey=1 "
-        + "-select_streams v:0 -show_entries stream=width,height "
-        + f" -of default=nw=1:nk=1 '{file}'"
-    )
-    res, out = getstatusoutput(cmd)
-    if res != 0:
-        raise FFprobeAttributesError(out)
-    width, height, dur = out.split("\n")
-    return (int(float(dur)), int(width), int(height))
+            cmd = (
+                "ffprobe -v error -show_entries format=duration "
+                + "-of default=noprint_wrappers=1:nokey=1 "
+                + "-select_streams v:0 -show_entries stream=width,height "
+                + f" -of default=nw=1:nk=1 '{file}'"
+            )
+            res, out = subprocess.getstatusoutput(cmd)
+            if res != 0:
+                raise FFprobeAttributesError(out)
+            width, height, dur = out.split("\n")
+            return (int(float(dur)), int(width), int(height))
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed with error: {e}")
+            if attempt < MAX_RETRIES - 1:
+                print("Retrying...")
+                time.sleep(1)  # Add a delay before retrying
+            else:
+                raise  # Raise an exception after max retries
