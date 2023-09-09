@@ -39,3 +39,4 @@ aria2p
 aria2r
 ffprobe
 ffprobe-python
+gunicorn
