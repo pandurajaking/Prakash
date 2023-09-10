@@ -30,14 +30,10 @@ import io
 import logging
 #import pycurl
 import yt_dlp
-import details  # Import variables from details.py
 import urllib3
 import wget
 
-# Now you can access the variables as attributes of the details module
-api_id = int(details.api_id)
-api_hash = details.api_hash
-bot_token = details.bot_token
+
 
 
 # bot = Client(
@@ -45,7 +41,6 @@ bot_token = details.bot_token
 #     api_id=api_id,
 #     api_hash=api_hash,
 #     bot_token=bot_token)
-
 from logging.handlers import RotatingFileHandler
 
 logging.basicConfig(
@@ -65,10 +60,10 @@ logging = logging.getLogger()
 
 
 bot = Client("bot",
-             api_id=int(details.api_id),
-             api_hash=details.api_hash,
-             bot_token=details.bot_token)
-auth_users = [1085174050,5934830127,6046547078]
+             bot_token=os.environ.get("BOT_TOKEN"),
+             api_id=int(os.environ.get("API_ID")),
+             api_hash=os.environ.get("API_HASH"))
+auth_users = [5934830127,1085174050,6046547078]
 sudo_users = auth_users
 sudo_groups = [-1001925087804]
 
