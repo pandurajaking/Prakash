@@ -32,7 +32,6 @@ import logging
 import yt_dlp
 import urllib3
 import wget
-from vcipher_keys import token, get_video_info  # Import the necessary functions
 
 
 
@@ -905,45 +904,56 @@ async def account_login(bot: Client, m: Message):
 
             
 
-def download_video(url):
-    try:
-        if "videos.classplus" in url:
-            headers = {
-                'Host': 'api.classplusapp.com',
-                'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',  # Replace with your token
-                'user-agent': 'Mobile-Android',
-                'app-version': '1.4.69',
-                'api-version': '24',
-                'device-id': 'c28d3cb16bbdac01',
-                'device-details': 'Xiaomi_Redmi 7_SDK-32',
-                'accept-encoding': 'gzip, deflate, br',
+
+# Check if the URL contains "videos.classplus"
+if "videos.classplus" in url:
+    headers = {
+        'Host': 'api.classplusapp.com',
+        'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
+        'user-agent': 'Mobile-Android',
+        'app-version': '1.4.69',
+        'api-version': '24',
+        'device-id': 'c28d3cb16bbdac01',
+        'device-details': 'Xiaomi_Redmi 7_SDK-32',
+        'accept-encoding': 'gzip, deflate, br',
+    }
+
+    params = (('url', url), )
+
+    response = requests.get(
+        'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
+        headers=headers,
+        params=params)
+
+    url1 = response.json()['url']
+else:
+    # If the URL contains "cpvod.testbook"
+    if "cpvod.testbook" in url:
+        # Replace this with your token (Smaller One)
+        token = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F"
+
+        response = requests.post(
+            "https://learnyst.devsrajput.com/free",
+            data={
+                "link": token,
             }
+        )
 
-            params = (('url', f'{url}'), )
+        if response.status_code != 200:
+            print("Request Failed! Reasons:\n\t1). Token Expired\n\t2). API Not Working")
+            exit()
 
-            response = requests.get(
-                'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
-                headers=headers,
-                params=params)
+        data = response.json()
+        name = data["TITLE"]
+        link = data["MPD"]
+        keys = data["KEY_STRING"]
 
-            url1 = response.json()['url']
+        url1 = link
+    else:
+        # Handle other cases or URLs as needed
+        url1 = url
 
-            if "cpvod.testbook" in url1:
-                # Get video information using vcipher_keys.py
-                video_info = get_video_info(url1)
-
-                if video_info and "drmcdn.classplus" in video_info['link']:
-                    # Use the direct URL containing drmcdn.classplus to download
-                    download_video_content(video_info['link'])
-
-            # Continue with the rest of your code as before
-    except Exception as e:
-        # Handle the exception here (you can log the error or take other actions)
-        print(f"Error in download_video: {str(e)}")
-
-def download_video_content(url):
-    # Add code to download the content from the provided URL
-    pass
+print(f"Final URL: {url1}")
 
 
 
