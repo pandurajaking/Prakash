@@ -906,36 +906,40 @@ async def account_login(bot: Client, m: Message):
             
 
 def download_video(url):
-    if "videos.classplus" in url:
-        headers = {
-            'Host': 'api.classplusapp.com',
-            'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
-            'user-agent': 'Mobile-Android',
-            'app-version': '1.4.69',
-            'api-version': '24',
-            'device-id': 'c28d3cb16bbdac01',
-            'device-details': 'Xiaomi_Redmi 7_SDK-32',
-            'accept-encoding': 'gzip, deflate, br',
-        }
+    try:
+        if "videos.classplus" in url:
+            headers = {
+                'Host': 'api.classplusapp.com',
+                'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',  # Replace with your token
+                'user-agent': 'Mobile-Android',
+                'app-version': '1.4.69',
+                'api-version': '24',
+                'device-id': 'c28d3cb16bbdac01',
+                'device-details': 'Xiaomi_Redmi 7_SDK-32',
+                'accept-encoding': 'gzip, deflate, br',
+            }
 
-        params = (('url', f'{url}'), )
+            params = (('url', f'{url}'), )
 
-        response = requests.get(
-            'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
-            headers=headers,
-            params=params)
+            response = requests.get(
+                'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
+                headers=headers,
+                params=params)
 
-        url1 = response.json()['url']
+            url1 = response.json()['url']
 
-        if "cpvod.testbook" in url1:
-            # Get video information using vcipher_keys.py
-            video_info = get_video_info(url1)
+            if "cpvod.testbook" in url1:
+                # Get video information using vcipher_keys.py
+                video_info = get_video_info(url1)
 
-            if video_info and "drmcdn.classplus" in video_info['link']:
-                # Use the direct URL containing drmcdn.classplus to download
-                download_video_content(video_info['link'])
+                if video_info and "drmcdn.classplus" in video_info['link']:
+                    # Use the direct URL containing drmcdn.classplus to download
+                    download_video_content(video_info['link'])
 
-        # Continue with the rest of your code as before
+            # Continue with the rest of your code as before
+    except Exception as e:
+        # Handle the exception here (you can log the error or take other actions)
+        print(f"Error in download_video: {str(e)}")
 
 def download_video_content(url):
     # Add code to download the content from the provided URL
