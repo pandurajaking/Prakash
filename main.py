@@ -892,65 +892,47 @@ async def account_login(bot: Client, m: Message):
         count = 1
     else:
         count = int(raw_text)
-try:
-    for i in range(arg, len(links)):
-        url = links[i][1]
-        name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").strip()
-        
-        # Check if the URL contains "videos.classplus"
-        if "videos.classplus" in url:
-            headers = {
-                'Host': 'api.classplusapp.com',
-                'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
-                'user-agent': 'Mobile-Android',
-                'app-version': '1.4.69',
-                'api-version': '24',
-                'device-id': 'c28d3cb16bbdac01',
-                'device-details': 'Xiaomi_Redmi 7_SDK-32',
-                'accept-encoding': 'gzip, deflate, br',
-            }
-        
-            params = (('url', url), )
-        
-            response = requests.get(
-                'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
-                headers=headers,
-                params=params)
-        
-            url1 = response.json()['url']
-        else:
-            # If the URL contains "cpvod.testbook"
-            if "cpvod.testbook" in url:
-                # Replace this with your token (Smaller One)
-                token = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F"
-        
-                response = requests.post(
-                    "https://learnyst.devsrajput.com/free",
-                    data={
-                        "link": token,
-                    }
-                )
-        
-                if response.status_code != 200:
-                    print("Request Failed! Reasons:\n\t1). Token Expired\n\t2). API Not Working")
-                    exit()
-        
-                data = response.json()
-                name = data["TITLE"]
-                link = data["MPD"]
-                keys = data["KEY_STRING"]
-        
-                url1 = link
-            else:
-                    # Handle other cases or URLs as needed
-                    url1 = url
 
-            print(f"Final URL: {url1}")
+    try:
+        for i in range(arg, len(links)):
+
+            url = links[i][1]
+            name1 = links[i][0].replace("\t", "").replace(":", "").replace(
+                "/",
+                "").replace("+", "").replace("#", "").replace("|", "").replace(
+                    "@", "").replace("*", "").replace(".", "").strip()
+
+            if "videos.classplus" in url:
+
+                headers = {
+                    'Host': 'api.classplusapp.com',
+                    'x-access-token':
+                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
+                    'user-agent': 'Mobile-Android',
+                    'app-version': '1.4.69',
+                    'api-version': '24',
+                    'device-id': 'c28d3cb16bbdac01',
+                    'device-details':
+                    'Xiaomi_Redmi 7_SDK-32',
+                    'accept-encoding': 'gzip, deflate, br',
+                    
+                    
+                }
+
+                params = (('url', f'{url}'), )
+
+                response = requests.get(
+                    'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
+                    headers=headers,
+                    params=params)
+                # print(response.json())
+                url1 = response.json()['url']
+            else:
+                url1 = url
 
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
-
             if "pdf" in url:
                 filename = f"{name}.pdf"
                 cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                                  ▄︻┻┳═一STUDEŊT乡✓'
@@ -1022,9 +1004,9 @@ try:
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
                 continue
-except Exception as e:
-    await m.reply_text(str(e))
-await m.reply_text("Done")
+    except Exception as e:
+        await m.reply_text(e)
+    await m.reply_text("Done")
 
 
 @bot.on_message(filters.command(["top"]))
