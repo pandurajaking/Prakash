@@ -942,17 +942,15 @@ try:
         
                 url1 = link
             else:
-                # Handle other cases or URLs as needed
-                url1 = url
-        
-        # Rest of your code for downloading and processing the video
+                    # Handle other cases or URLs as needed
+                    url1 = url
 
-except Exception as e:
-    print(e)
+            print(f"Final URL: {url1}")
 
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
+
             if "pdf" in url:
                 filename = f"{name}.pdf"
                 cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                                  ▄︻┻┳═一STUDEŊT乡✓'
