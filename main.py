@@ -32,7 +32,7 @@ import logging
 import yt_dlp
 import urllib3
 import wget
-
+from vcipher_keys import get_new_url
 
 
 
@@ -894,41 +894,39 @@ async def account_login(bot: Client, m: Message):
         count = int(raw_text)
 
     try:
-        for i in range(arg, len(links)):
+    for i in range(arg, len(links)):
+        url = links[i][1]
+        name1 = links[i][0].replace("\t", "").replace(":", "").replace(
+            "/",
+            "").replace("+", "").replace("#", "").replace("|", "").replace(
+                "@", "").replace("*", "").replace(".", "").strip()
 
-            url = links[i][1]
-            name1 = links[i][0].replace("\t", "").replace(":", "").replace(
-                "/",
-                "").replace("+", "").replace("#", "").replace("|", "").replace(
-                    "@", "").replace("*", "").replace(".", "").strip()
+        if "videos.classplus" in url:
+            headers = {
+                'Host': 'api.classplusapp.com',
+                'x-access-token':
+                'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE9MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
+                'user-agent': 'Mobile-Android',
+                'app-version': '1.4.69',
+                'api-version': '24',
+                'device-id': 'c28d3cb16bbdac01',
+                'device-details':
+                'Xiaomi_Redmi 7_SDK-32',
+                'accept-encoding': 'gzip, deflate, br',
+            }
 
-            if "videos.classplus" in url:
+            params = (('url', f'{url}'), )
 
-                headers = {
-                    'Host': 'api.classplusapp.com',
-                    'x-access-token':
-                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
-                    'user-agent': 'Mobile-Android',
-                    'app-version': '1.4.69',
-                    'api-version': '24',
-                    'device-id': 'c28d3cb16bbdac01',
-                    'device-details':
-                    'Xiaomi_Redmi 7_SDK-32',
-                    'accept-encoding': 'gzip, deflate, br',
-                    
-                    
-                }
-
-                params = (('url', f'{url}'), )
-
-                response = requests.get(
-                    'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
-                    headers=headers,
-                    params=params)
-                # print(response.json())
-                url1 = response.json()['url']
-            else:
-                url1 = url
+            response = requests.get(
+                'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
+                headers=headers,
+                params=params)
+            url1 = response.json()['url']
+        elif "cpvod.testbook" in url:
+            # Use vcipher_keys.py to fetch a new URL
+            name, url1, token, keys = get_new_url()
+        else:
+            url1 = url
 
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
