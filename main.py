@@ -1022,9 +1022,12 @@ try:
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
                 continue
+    try:
+    
     except Exception as e:
-        await m.reply_text(e)
-    await m.reply_text("Done")
+         await m.reply_text(str(e))
+     await m.reply_text("Done")
+
 
 
 @bot.on_message(filters.command(["top"]))
