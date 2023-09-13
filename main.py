@@ -892,8 +892,7 @@ async def account_login(bot: Client, m: Message):
         count = 1
     else:
         count = int(raw_text)
-
-    try:
+try:
     for i in range(arg, len(links)):
         url = links[i][1]
         name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").strip()
@@ -945,8 +944,11 @@ async def account_login(bot: Client, m: Message):
             else:
                 # Handle other cases or URLs as needed
                 url1 = url
+        
+        # Rest of your code for downloading and processing the video
 
-
+except Exception as e:
+    print(e)
 
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
