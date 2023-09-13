@@ -892,11 +892,10 @@ async def account_login(bot: Client, m: Message):
         count = 1
     else:
         count = int(raw_text)
-
-    try:
-    for i in range(arg, len(links)):
-        url = links[i][1]
-        name1 = links[i][0].replace("\t", "").replace(":", "").replace(
+try:
+   for i in range(arg, len(links)):
+     url = links[i][1]
+     name1 = links[i][0].replace("\t", "").replace(":", "").replace(
             "/",
             "").replace("+", "").replace("#", "").replace("|", "").replace(
                 "@", "").replace("*", "").replace(".", "").strip()
@@ -1002,9 +1001,9 @@ async def account_login(bot: Client, m: Message):
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
                 continue
-    except Exception as e:
-        await m.reply_text(e)
-    await m.reply_text("Done")
+except Exception as e:
+     await m.reply_text(e)
+await m.reply_text("Done")
 
 
 @bot.on_message(filters.command(["top"]))
