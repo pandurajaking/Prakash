@@ -820,14 +820,17 @@ async def account_login(bot: Client, m: Message):
 @bot.on_message(filters.command(["pro_jw"]))
 async def account_login(bot: Client, m: Message):
     user = m.from_user.id if m.from_user is not None else None
+    
     if user is not None and user not in sudo_users:
         await m.reply("**TUM BHOSADI WALE NIKKAL LO**", quote=True)
         return
     else:
         editable = await m.reply_text(
-            "Hello @Prakash_Baraiya **I am jw Downloader Bot**. I can download videos from **text** file one by one.**\n\nLanguage** : Python**\nFramework** :Pyrogram\n\nSend **TXT** File {Name : Link}"
-            , reply_markup=keyboard)
-    
+            "Hello @Prakash_Baraiya **I am jw Downloader Bot**. I can download videos from **text** file one by one.**\n\nLanguage** : Python**\nFramework** :Pyrogram\n\nSend **TXT** File {Name : Link}",
+            reply_markup=keyboard
+        )
+
+    # Listen for the user to send a text file
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
     await input.delete(True)
@@ -839,14 +842,17 @@ async def account_login(bot: Client, m: Message):
             content = f.read()
         content = content.split("\n")
         links = []
+
         for line in content:
             # Use regular expressions to extract URLs starting with http or https
             matches = re.findall(r'\bhttps?://\S+', line)
+            
             if matches:
                 url = matches[0]  # Take the first detected URL
                 # Remove the URL part from the line to get the name
                 name = line.replace(url, "").strip()
                 links.append((name, url))
+        
         os.remove(x)
     except:
         await m.reply_text("Invalid file input.")
@@ -856,7 +862,8 @@ async def account_login(bot: Client, m: Message):
     editable = await m.reply_text(
         f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**"
     )
-    
+
+    # Listen for the user's input (index to start downloading from)
     input1: Message = await bot.listen(editable.chat.id)
     raw_text = input1.text
 
@@ -872,17 +879,18 @@ async def account_login(bot: Client, m: Message):
     await m.reply_text("**Enter resolution**")
 
     input2: Message = await bot.listen(editable.chat.id)
-
     raw_text2 = input2.text
 
     editable4 = await m.reply_text(
         "Now send the **Thumb url**\nEg : ```https://telegra.ph/file/d9e24878bd4aba05049a1.jpg```\n\nor Send **no**"
     )
-    
+
+    # Listen for the user's input (thumbnail URL or "no")
     input6 = message = await bot.listen(editable.chat.id)
     raw_text6 = input6.text
 
     thumb = input6.text
+
     if thumb.startswith("http://") or thumb.startswith("https://"):
         getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
         thumb = "thumb.jpg"
@@ -906,7 +914,7 @@ async def account_login(bot: Client, m: Message):
                 headers = {
                     'Host': 'api.classplusapp.com',
                     'x-access-token':
-                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE9MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
+                    'eyJhbGciOiJIUzM4NCIsInR5CI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE4OSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4CI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.69',
                     'api-version': '24',
@@ -924,26 +932,25 @@ async def account_login(bot: Client, m: Message):
                     params=params)
                 url1 = response.json()['url']
             elif "cpvod.testbook" in url:
-            # Use vcipher_keys.py to fetch a new URL
-            try:
-                # Run vcipher_keys.py to get the URL
-                vcipher_output = subprocess.check_output(["python", "vcipher_keys.py", url], text=True)
-                # Parse the output to find the URL containing drmcdn.classplus
-                url1 = extract_drmcdn_url(vcipher_output)
-            except Exception as e:
-                await m.reply_text(f"Error running vcipher_keys.py: {str(e)}")
-                continue
-        else:
-            url1 = url
-
+                # Use vcipher_keys.py to fetch a new URL
+                try:
+                    # Run vcipher_keys.py to get the URL
+                    vcipher_output = subprocess.check_output(["python", "vcipher_keys.py", url], text=True)
+                    # Parse the output to find the URL containing drmcdn.classplus
+                    url1 = extract_drmcdn_url(vcipher_output)
+                except Exception as e:
+                    await m.reply_text(f"Error running vcipher_keys.py: {str(e)}")
+                    continue
+            else:
+                url1 = url
 
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
-            
+
             if "pdf" in url:
                 filename = f"{name}.pdf"
-                cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                                  ▄︻┻┳═一STUDEŊT乡✓'
+                cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- ▄︻┻┳═一STUDEŊT乡✓'
             else:
                 filename = f"{name}.mp4" if os.path.isfile(f"{name}.mp4") else f"{name}.mkv"
                 cc = f'**Title »** {name1}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- ▄︻┻┳═一STUDEŊT乡✓'
@@ -1010,8 +1017,8 @@ async def account_login(bot: Client, m: Message):
         await m.reply_text(e)
     await m.reply_text("Done")
 
-               
-               
+            
+                
 
 @bot.on_message(filters.command(["top"]))
 async def account_login(bot: Client, m: Message):
