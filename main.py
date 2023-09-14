@@ -924,10 +924,18 @@ async def account_login(bot: Client, m: Message):
                     params=params)
                 url1 = response.json()['url']
             elif "cpvod.testbook" in url:
-                # Use vcipher_keys.py to fetch a new URL
-                name, url1, token, keys = get_new_url()
-            else:
-                url1 = url
+            # Use vcipher_keys.py to fetch a new URL
+            try:
+                # Run vcipher_keys.py to get the URL
+                vcipher_output = subprocess.check_output(["python", "vcipher_keys.py", url], text=True)
+                # Parse the output to find the URL containing drmcdn.classplus
+                url1 = extract_drmcdn_url(vcipher_output)
+            except Exception as e:
+                await m.reply_text(f"Error running vcipher_keys.py: {str(e)}")
+                continue
+        else:
+            url1 = url
+
 
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
