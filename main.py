@@ -821,7 +821,7 @@ async def account_login(bot: Client, m: Message):
 @bot.on_message(filters.command(["pro_jw"]))
 async def account_login(bot: Client, m: Message):
     user = m.from_user.id if m.from_user is not None else None
-    
+
     if user is not None and user not in sudo_users:
         await m.reply("**TUM BHOSADI WALE NIKKAL LO**", quote=True)
         return
@@ -847,13 +847,13 @@ async def account_login(bot: Client, m: Message):
         for line in content:
             # Use regular expressions to extract URLs starting with http or https
             matches = re.findall(r'\bhttps?://\S+', line)
-            
+
             if matches:
                 url = matches[0]  # Take the first detected URL
                 # Remove the URL part from the line to get the name
                 name = line.replace(url, "").strip()
                 links.append((name, url))
-        
+
         os.remove(x)
     except:
         await m.reply_text("Invalid file input.")
@@ -915,7 +915,7 @@ async def account_login(bot: Client, m: Message):
                 headers = {
                     'Host': 'api.classplusapp.com',
                     'x-access-token':
-                    'eyJhbGciOiJIUzM4NCIsInR5CI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE4OSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4CI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
+                    'eyJhbGciOiJIUzM4NCIsInR5CI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE4OSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg4MjNkYjEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4CI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.69',
                     'api-version': '24',
@@ -933,28 +933,26 @@ async def account_login(bot: Client, m: Message):
                     params=params)
                 url1 = response.json()['url']
             elif "cpvod.testbook" in url:
-                
-# Replace this with your token (Smaller One)
-token = "eyJhbGciOiJIUzM4NCIsInR5CI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE4OSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg4MjNkYjEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4CI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F"
+                # Replace this with your token (Smaller One)
+                token = "eyJhbGciOiJIUzM4NCIsInR5CI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE4OSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg4MjNkYjEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4CI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F"
 
-response = requests.post(
-    "https://learnyst.devsrajput.com/free", 
-    data={
-        "link": token,
-    }
-)
+                response = requests.post(
+                    "https://learnyst.devsrajput.com/free",
+                    data={
+                        "link": token,
+                    }
+                )
 
-if response.status_code != 200:
-    print("Request Failed! reasons:\n\t1). Token Expired\n\t2). API Not Working")
-    exit()
+                if response.status_code != 200:
+                    print("Request Failed! reasons:\n\t1). Token Expired\n\t2). API Not Working")
+                    exit()
 
-data = response.json()
-name = data["TITLE"]
-link = data["MPD"]
-keys = data["KEY_STRING"]
+                data = response.json()
+                name = data["TITLE"]
+                link = data["MPD"]
+                keys = data["KEY_STRING"]
 
-print(f"{name}\n{link}\n{token}\n\n{keys}")
-
+                print(f"{name}\n{link}\n{token}\n\n{keys}")
             else:
                 url1 = url
 
@@ -1031,7 +1029,6 @@ print(f"{name}\n{link}\n{token}\n\n{keys}")
         await m.reply_text(e)
     await m.reply_text("Done")
 
-            
                 
 
 @bot.on_message(filters.command(["top"]))
