@@ -934,7 +934,7 @@ async def account_login(bot: Client, m: Message):
                 url1 = response.json()['url']
             elif "cpvod.testbook" in url:
                 # Replace this with your token (Smaller One)
-                token = "eyJhbGciOiJIUzM4NCIsInR5CI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE4OSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg4MjNkYjEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4CI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F"
+                token = "eyJjb250ZW50QXV0aCI6ImV5SmpiMjUwWlc1MFNXUWlPaUk0WVRsbVpUUmxZMlF4TURJM01tUXdPRFV4TkRnMU5HTmlOMll4WVdKall5SXNJbVY0Y0dseVpYTWlPaUl4Tmpnek16WXlPVFU0SWl3aWJHbGpaVzV6WlZKMWJHVnpJam9pZTF3aVkyRnVVR1Z5YzJsemRGd2lPbVpoYkhObExGd2ljbVZ1ZEdGc1JIVnlZWFJwYjI1Y0lqb3hPREF3TUgwaWZRPT0iLCJzaWduYXR1cmUiOiI3ZTU0NjliOGRmMDQ0ZmFjOjIwMjMwNTA1VDA4NDkxOFo6TXE4ekMtSTRsVF9CUXlvQWdZRlR4VDhfVjlLZEtCZHdoYUdIYnNQOExwMD0ifQ=="
 
                 response = requests.post(
                     "https://learnyst.devsrajput.com/free",
