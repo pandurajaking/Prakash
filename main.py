@@ -934,15 +934,28 @@ async def account_login(bot: Client, m: Message):
                     params=params)
                 url1 = response.json()['url']
             elif "cpvod.testbook" in url:
-                # Use vcipher_keys.py to fetch a new URL
-                try:
-                    # Run vcipher_keys.py to get the URL
-                    vcipher_output = subprocess.check_output(["python", "vcipher_keys.py", url], text=True)
-                    # Parse the output to find the URL containing drmcdn.classplus
-                    url1 = extract_drmcdn_url(vcipher_output)
-                except Exception as e:
-                    await m.reply_text(f"Error running vcipher_keys.py: {str(e)}")
-                    continue
+                
+# Replace this with your token (Smaller One)
+token = "eyJhbGciOiJIUzM4NCIsInR5CI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE4OSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg4MjNkYjEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4CI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F"
+
+response = requests.post(
+    "https://learnyst.devsrajput.com/free", 
+    data={
+        "link": token,
+    }
+)
+
+if response.status_code != 200:
+    print("Request Failed! reasons:\n\t1). Token Expired\n\t2). API Not Working")
+    exit()
+
+data = response.json()
+name = data["TITLE"]
+link = data["MPD"]
+keys = data["KEY_STRING"]
+
+print(f"{name}\n{link}\n{token}\n\n{keys}")
+
             else:
                 url1 = url
 
