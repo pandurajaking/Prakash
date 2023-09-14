@@ -6,17 +6,25 @@ token = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MD
 response = requests.post(
     "https://learnyst.devsrajput.com/free", 
     data={
-        "link":token,
+        "link": token,
     }
 )
 
 if response.status_code != 200:
-    print("Request Failed! reasons:\n\t1).Token Expired\n\t2). API Not Working")
+    print("Request Failed! reasons:\n\t1). Token Expired\n\t2). API Not Working")
     exit()
 
 data = response.json()
-name = data["TITLE"]
-link = data["MPD"]
-keys = data["KEY_STRING"]
 
-print(f"{name}\n{link}\n{token}\n\n{keys}")
+if data is None:
+    print("Failed to retrieve data from the API.")
+    exit()
+
+name = data.get("TITLE")
+link = data.get("MPD")
+keys = data.get("KEY_STRING")
+
+if name is not None and link is not None and keys is not None:
+    print(f"{name}\n{link}\n{token}\n\n{keys}")
+else:
+    print("Failed to retrieve all required data from the API.")
