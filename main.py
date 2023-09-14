@@ -826,7 +826,8 @@ async def account_login(bot: Client, m: Message):
     else:
         editable = await m.reply_text(
             "Hello @Prakash_Baraiya **I am jw Downloader Bot**. I can download videos from **text** file one by one.**\n\nLanguage** : Python**\nFramework** :Pyrogram\n\nSend **TXT** File {Name : Link}"
-       ,reply_markup=keyboard)
+            , reply_markup=keyboard)
+    
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
     await input.delete(True)
@@ -847,7 +848,6 @@ async def account_login(bot: Client, m: Message):
                 name = line.replace(url, "").strip()
                 links.append((name, url))
         os.remove(x)
-# print(len(links))
     except:
         await m.reply_text("Invalid file input.")
         os.remove(x)
@@ -856,6 +856,7 @@ async def account_login(bot: Client, m: Message):
     editable = await m.reply_text(
         f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**"
     )
+    
     input1: Message = await bot.listen(editable.chat.id)
     raw_text = input1.text
 
@@ -870,14 +871,14 @@ async def account_login(bot: Client, m: Message):
 
     await m.reply_text("**Enter resolution**")
 
-
     input2: Message = await bot.listen(editable.chat.id)
-    
+
     raw_text2 = input2.text
 
     editable4 = await m.reply_text(
         "Now send the **Thumb url**\nEg : ```https://telegra.ph/file/d9e24878bd4aba05049a1.jpg```\n\nor Send **no**"
     )
+    
     input6 = message = await bot.listen(editable.chat.id)
     raw_text6 = input6.text
 
@@ -892,60 +893,56 @@ async def account_login(bot: Client, m: Message):
         count = 1
     else:
         count = int(raw_text)
-try:
-   for i in range(arg, len(links)):
-       url = links[i][1]
-       name1 = links[i][0].replace("\t", "").replace(":", "").replace(
-            "/",
-            "").replace("+", "").replace("#", "").replace("|", "").replace(
+
+    try:
+        for i in range(arg, len(links)):
+            url = links[i][1]
+            name1 = links[i][0].replace("\t", "").replace(":", "").replace(
+                "/",
+                "").replace("+", "").replace("#", "").replace("|", "").replace(
                 "@", "").replace("*", "").replace(".", "").strip()
 
-       if "videos.classplus" in url:
-           # Proper indentation here
-           headers = {
-               'Host': 'api.classplusapp.com',
-               'x-access-token':
-                   'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE4NjE4OSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE9MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4CI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
-               'user-agent': 'Mobile-Android',
-               'app-version': '1.4.69',
-               'api-version': '24',
-               'device-id': 'c28d3cb16bbdac01',
-               'device-details':
-                   'Xiaomi_Redmi 7_SDK-32',
-               'accept-encoding': 'gzip, deflate, br',
-           }
+            if "videos.classplus" in url:
+                headers = {
+                    'Host': 'api.classplusapp.com',
+                    'x-access-token':
+                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE9MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
+                    'user-agent': 'Mobile-Android',
+                    'app-version': '1.4.69',
+                    'api-version': '24',
+                    'device-id': 'c28d3cb16bbdac01',
+                    'device-details':
+                    'Xiaomi_Redmi 7_SDK-32',
+                    'accept-encoding': 'gzip, deflate, br',
+                }
 
-           params = (('url', f'{url}'), )
+                params = (('url', f'{url}'), )
 
-           response = requests.get(
-               'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
-               headers=headers,
-               params=params)
-           url1 = response.json()['url']
-       elif "cpvod.testbook" in url:
-           # Use vcipher_keys.py to fetch a new URL
-           name, url1, token, keys = get_new_url()
-       else:
-           url1 = url
+                response = requests.get(
+                    'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
+                    headers=headers,
+                    params=params)
+                url1 = response.json()['url']
+            elif "cpvod.testbook" in url:
+                # Use vcipher_keys.py to fetch a new URL
+                name, url1, token, keys = get_new_url()
+            else:
+                url1 = url
 
-           name = f'{str(count).zfill(3)}) {name1}'
-           Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
-           prog = await m.reply_text(Show)
-           if "pdf" in url:
-               filename = f"{name}.pdf"
-               cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                                  ▄︻┻┳═一STUDEŊT乡✓'
-           else:
-               filename = f"{name}.mp4" if os.path.isfile(f"{name}.mp4") else f"{name}.mkv"
-               cc = f'**Title »** {name1}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- ▄︻┻┳═一STUDEŊT乡✓'
-            
-           # Rest of the code...
-
+            name = f'{str(count).zfill(3)}) {name1}'
+            Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
+            prog = await m.reply_text(Show)
             
             if "pdf" in url:
-                
+                filename = f"{name}.pdf"
+                cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                                  ▄︻┻┳═一STUDEŊT乡✓'
+            else:
+                filename = f"{name}.mp4" if os.path.isfile(f"{name}.mp4") else f"{name}.mkv"
+                cc = f'**Title »** {name1}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- ▄︻┻┳═一STUDEŊT乡✓'
+
+            if "pdf" in url:
                 cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
             else:
-                
                 cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mp4 --format "bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]" "{url1}"'
 
             try:
@@ -965,7 +962,6 @@ try:
                         f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
                         shell=True)
 
-#                 
                 await prog.delete(True)
                 reply = await m.reply_text(f"Uploading - ```{name}```")
                 try:
@@ -975,13 +971,11 @@ try:
                         thumbnail = thumb
                 except Exception as e:
                     await m.reply_text(str(e))
-                    
-                
+
                 if "pdf" in url1:
                     await m.reply_document(filename, caption=cc)
                 else:
                     dur = int(helper.duration(filename))
-                    
                     start_time = time.time()
                     await m.reply_video(filename,
                                         supports_streaming=True,
@@ -1004,10 +998,12 @@ try:
                     f"**Downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
                 )
                 continue
-except Exception as e:
-     await m.reply_text(e)
-await m.reply_text("Done")
+    except Exception as e:
+        await m.reply_text(e)
+    await m.reply_text("Done")
 
+               
+               
 
 @bot.on_message(filters.command(["top"]))
 async def account_login(bot: Client, m: Message):
