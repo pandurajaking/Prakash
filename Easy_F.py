@@ -1,32 +1,8 @@
-from datetime import datetime, timedelta
-import time
+from datetime import datetime,timedelta
 
-MAX_RETRIES = 5
-
-def hrb_with_retry(value, digits=2, delim="", postfix=""):
-    for _ in range(MAX_RETRIES):
-        try:
-            result = hrb(value, digits, delim, postfix)
-            return result  # If successful, return the result
-        except Exception as e:
-            print(f"Error: {e}")
-            time.sleep(1)  # Wait for a short time before retrying
-    else:
-        raise Exception("Max retries reached. Unable to calculate hrb.")
-
-def hrt_with_retry(seconds, precision=0):
-    for _ in range(MAX_RETRIES):
-        try:
-            result = hrt(seconds, precision)
-            return result  # If successful, return the result
-        except Exception as e:
-            print(f"Error: {e}")
-            time.sleep(1)  # Wait for a short time before retrying
-    else:
-        raise Exception("Max retries reached. Unable to calculate hrt.")
-
-# Your original hrb and hrt functions (unchanged)
-def hrb(value, digits=2, delim="", postfix=""):
+def hrb(value, digits= 2, delim= "", postfix=""):
+    """Return a human-readable file size.
+    """
     if value is None:
         return None
     chosen_unit = "B"
@@ -38,9 +14,12 @@ def hrb(value, digits=2, delim="", postfix=""):
             break
     return f"{value:.{digits}f}" + delim + chosen_unit + postfix
 
-def hrt(seconds, precision=0):
+def hrt(seconds, precision = 0):
+    """Return a human-readable time delta as a string.
+    """
     pieces = []
     value = timedelta(seconds=seconds)
+    
 
     if value.days:
         pieces.append(f"{value.days}d")
@@ -64,5 +43,3 @@ def hrt(seconds, precision=0):
         return "".join(pieces)
 
     return "".join(pieces[:precision])
-
-
