@@ -30,10 +30,12 @@ import io
 import logging
 #import pycurl
 import yt_dlp
-import urllib3
-import wget
+import details  # Import variables from details.py
 
-
+# Now you can access the variables as attributes of the details module
+api_id = int(details.api_id)
+api_hash = details.api_hash
+bot_token = details.bot_token
 
 
 # bot = Client(
@@ -41,6 +43,7 @@ import wget
 #     api_id=api_id,
 #     api_hash=api_hash,
 #     bot_token=bot_token)
+
 from logging.handlers import RotatingFileHandler
 
 logging.basicConfig(
@@ -60,12 +63,12 @@ logging = logging.getLogger()
 
 
 bot = Client("bot",
-             bot_token=os.environ.get("BOT_TOKEN"),
-             api_id=int(os.environ.get("API_ID")),
-             api_hash=os.environ.get("API_HASH"))
-auth_users = [5934830127,1085174050,6046547078]
+             api_id=int(details.api_id),
+             api_hash=details.api_hash,
+             bot_token=details.bot_token)
+auth_users = [1085174050,5934830127,6046547078]
 sudo_users = auth_users
-sudo_groups = [-1001925087804]
+sudo_groups = [-1001663303433,-972255653]
 
 shell_usage = f"**USAGE:** Executes terminal commands directly via bot.\n\n<pre>/shell pip install requests</pre>"
 def one(user_id):
@@ -165,21 +168,14 @@ async def account_login(bot: Client, m: Message):
             content = f.read()
         content = content.split("\n")
         links = []
-        for line in content:
-            # Use regular expressions to extract URLs starting with http or https
-            matches = re.findall(r'\bhttps?://\S+', line)
-            if matches:
-                url = matches[0]  # Take the first detected URL
-                # Remove the URL part from the line to get the name
-                name = line.replace(url, "").strip()
-                links.append((name, url))
+        for i in content:
+            links.append(i.split(":",1)) 
         os.remove(x)
-# print(len(links))
+        # print(len(links))
     except:
         await m.reply_text("Invalid file input.")
         os.remove(x)
         return
-
 
     editable = await m.reply_text(
         f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**"
@@ -838,16 +834,10 @@ async def account_login(bot: Client, m: Message):
             content = f.read()
         content = content.split("\n")
         links = []
-        for line in content:
-            # Use regular expressions to extract URLs starting with http or https
-            matches = re.findall(r'\bhttps?://\S+', line)
-            if matches:
-                url = matches[0]  # Take the first detected URL
-                # Remove the URL part from the line to get the name
-                name = line.replace(url, "").strip()
-                links.append((name, url))
+        for i in content:
+            links.append(i.split(":", 1))
         os.remove(x)
-# print(len(links))
+        # print(len(links))
     except:
         await m.reply_text("Invalid file input.")
         os.remove(x)
@@ -907,10 +897,10 @@ async def account_login(bot: Client, m: Message):
                 headers = {
                     'Host': 'api.classplusapp.com',
                     'x-access-token':
-                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTQwNzk1MjYsImV4cCI6MTY5NDY4NDMyNn0.3EatpR80XlzD2q9pImEnvYXieV3SfwckUExG_Y-4NtLk6CSm_dkKPfRKynp-Ed3F',
+                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTI4MDg3NzUsImV4cCI6MTY5MzQxMzU3NX0.FIrcF7Fp5ryth1DKDTQsGKvNGi4vjTJSorznF8F77v2ttJFxZ2FeomkDPQwBQDfx',
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.69',
-                    'api-version': '24',
+                    'api-version': '21',
                     'device-id': 'c28d3cb16bbdac01',
                     'device-details':
                     'Xiaomi_Redmi 7_SDK-32',
