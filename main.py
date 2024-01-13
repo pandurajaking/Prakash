@@ -28,11 +28,15 @@ import re
 import os
 import io
 import logging
-from shutil import get_terminal_size
-from io import BytesIO
-from hachoir.parser import createParser
-from hachoir.metadata import extractMetadata
-import pycurl
+#import pycurl
+import yt_dlp
+import details  # Import variables from details.py
+
+# Now you can access the variables as attributes of the details module
+api_id = int(details.api_id)
+api_hash = details.api_hash
+bot_token = details.bot_token
+
 
 # bot = Client(
 #     "bot",
@@ -59,12 +63,12 @@ logging = logging.getLogger()
 
 
 bot = Client("bot",
-             bot_token=os.environ.get("BOT_TOKEN"),
-             api_id=int(os.environ.get("API_ID")),
-             api_hash=os.environ.get("API_HASH"))
-auth_users = [1085174050,5934830127]
+             api_id=int(details.api_id),
+             api_hash=details.api_hash,
+             bot_token=details.bot_token)
+auth_users = [1085174050,5934830127,6046547078]
 sudo_users = auth_users
-sudo_groups = [-1001663303433]
+sudo_groups = [-1001663303433,-972255653]
 
 shell_usage = f"**USAGE:** Executes terminal commands directly via bot.\n\n<pre>/shell pip install requests</pre>"
 def one(user_id):
@@ -152,7 +156,7 @@ async def account_login(bot: Client, m: Message):
         return
     else:
         editable = await m.reply_text(
-            "Hello @Prakash_Baraiya **I am Text Downloader Bot**. I can download videos from **text** file one by one.**\n\nDeveloper** : उससे क्या होगा काम से काम रखो 😂 @Adrenalinators**\nLanguage** : Python**\nFramework** : Pyrogram\n\nSend **TXT** File {Name : Link}")
+            "Hello @Prakash_Baraiya **I am Text Downloader Bot**. I can download videos from **text** file one by one.**\n\nDeveloper** : उससे क्या होगा काम से काम रखो 😂 @Prakash_Baraiya**\nLanguage** : Python**\nFramework** : Pyrogram\n\nSend **TXT** File {Name : Link}")
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
     await input.delete(True)
@@ -297,6 +301,8 @@ async def account_login(bot: Client, m: Message):
                     ytf = out['852x470']
                 elif '1280x720' in out:
                     ytf = out['1280x720']
+                elif '320x240' in out:
+                    ytf = out['320x240']
                 elif 'unknown' in out:
                     ytf = out["unknown"]
                 else:
@@ -385,7 +391,7 @@ async def account_login(bot: Client, m: Message):
             except Exception:
                 res = "NA"
 
-            # if "youtu" in url:
+            # if "youtube" in url:
             # if ytf == f"'bestvideo[height<={raw_text2}][ext=mp4]+bestaudio[ext=m4a]'" or "acecwply" in url:
             if "acecwply" in url:
                 cmd = f'yt-dlp -o "{name}.%(ext)s" -f "bestvideo[height<={raw_text2}]+bestaudio" --hls-prefer-ffmpeg --no-keep-video --remux-video mp4 --no-warning "{url}"'
@@ -405,8 +411,8 @@ async def account_login(bot: Client, m: Message):
             try:
                 Show = f"**Downloading:-**\n\n**Name :-** `{name}\nQuality - {raw_text2}`\n\n**Url :-** `{url}`"
                 prog = await m.reply_text(Show)
-                cc = f"**Name »** {name1} {res}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}"
-                cc1 = f"**Name »** ** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}"
+                cc = f"**Name »** {name1} {res}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- ◤SPIDER★MAN 🕸️ 🕷️"
+                cc1 = f"**Name »** ** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                  ◤SPIDER★MAN 🕸️ 🕷️"
                 #                         await prog.delete (True)
                 #                 if cmd == "pdf" or "drive" in url:
                 #                     try:
@@ -438,7 +444,7 @@ async def account_login(bot: Client, m: Message):
                         await m.reply_document(
                             ka,
                             caption=
-                            f"**Name »** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}"
+                            f"**Name »** {name1} {res}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                     ◤SPIDER★MAN 🕸️ 🕷️"
                         )
                         count += 1
                         # time.sleep(1)
@@ -887,17 +893,20 @@ async def account_login(bot: Client, m: Message):
                     "@", "").replace("*", "").replace(".", "").strip()
 
             if "videos.classplus" in url:
+
                 headers = {
                     'Host': 'api.classplusapp.com',
                     'x-access-token':
-                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTc1OTk5NjMsIm9yZ0lkIjozNTE1MjEsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOnRydWUsIm9yZ0NvZGUiOiJhdWZpciIsImZpbmdlcnByaW50SWQiOiJjOWIxZDZiZDMxMTI3M2U0OTJiNTcxYTAwMWQ0YTkyNSIsImlhdCI6MTY5MDY5ODczOCwiZXhwIjoxNjkxMzAzNTM4fQ.kDUNPb5EFDp1vmNZ-VcRIBn2vSEz_ssyAxmqbSDLJFD42g7i43aIrWgFbWYfh60L',
+                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6OTI1MzU1NzksIm9yZ0lkIjo0MDMwOTUsInR5cGUiOjEsIm1vYmlsZSI6IjkxNjM1OTE0NjE0NSIsIm5hbWUiOiJQcmFrYXNoIEJhcmFpeWEiLCJlbWFpbCI6InByYWthc2gxNTEwODNAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJvcmdDb2RlIjoib3hwYmgiLCJmaW5nZXJwcmludElkIjoiYTg0MjNkYjFlZjE5MjI3ZTMyOGFmNGEwMGRlODJlMTEiLCJpYXQiOjE2OTI4MDg3NzUsImV4cCI6MTY5MzQxMzU3NX0.FIrcF7Fp5ryth1DKDTQsGKvNGi4vjTJSorznF8F77v2ttJFxZ2FeomkDPQwBQDfx',
                     'user-agent': 'Mobile-Android',
-                    'app-version': '1.4.76.4',
-                    'api-version': '24',
+                    'app-version': '1.4.69',
+                    'api-version': '19',
                     'device-id': 'c28d3cb16bbdac01',
                     'device-details':
                     'Xiaomi_Redmi 7_SDK-32',
-                    'accept-encoding': 'gzip',
+                    'accept-encoding': 'gzip, deflate, br',
+                    
+                    
                 }
 
                 params = (('url', f'{url}'), )
@@ -916,10 +925,10 @@ async def account_login(bot: Client, m: Message):
             prog = await m.reply_text(Show)
             if "pdf" in url:
                 filename = f"{name}.pdf"
-                cc = f'**Title »** {name1}.pdf\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                       @Prakash_Baraiya'
+                cc = f'**Title »** {name1}.pdf\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :-                                       ◤SPIDER★MAN 🕸️ 🕷️'
             else:
                 filename = f"{name}.mp4" if os.path.isfile(f"{name}.mp4") else f"{name}.mkv"
-                cc = f'**Title »** {name1}.mp4\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- @Prakash_Baraiya'
+                cc = f'**Title »** {name1}.mp4\n**Batch »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- ◤SPIDER★MAN 🕸️ 🕷️'
             
             
             if "pdf" in url:
