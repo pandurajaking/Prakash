@@ -168,10 +168,16 @@ async def account_login(bot: Client, m: Message):
             content = f.read()
         content = content.split("\n")
         links = []
-        for i in content:
-            links.append(i.split(":",1)) 
+        for line in content:
+            # Use regular expressions to extract URLs starting with http or https
+            matches = re.findall(r'\bhttps?://\S+', line)
+            if matches:
+                url = matches[0]  # Take the first detected URL
+                # Remove the URL part from the line to get the name
+                name = line.replace(url, "").strip()
+                links.append((name, url))
         os.remove(x)
-        # print(len(links))
+# print(len(links))
     except:
         await m.reply_text("Invalid file input.")
         os.remove(x)
@@ -834,14 +840,21 @@ async def account_login(bot: Client, m: Message):
             content = f.read()
         content = content.split("\n")
         links = []
-        for i in content:
-            links.append(i.split(":", 1))
+        for line in content:
+            # Use regular expressions to extract URLs starting with http or https
+            matches = re.findall(r'\bhttps?://\S+', line)
+            if matches:
+                url = matches[0]  # Take the first detected URL
+                # Remove the URL part from the line to get the name
+                name = line.replace(url, "").strip()
+                links.append((name, url))
         os.remove(x)
-        # print(len(links))
+# print(len(links))
     except:
         await m.reply_text("Invalid file input.")
         os.remove(x)
         return
+
 
     editable = await m.reply_text(
         f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **0**"
