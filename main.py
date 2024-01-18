@@ -31,6 +31,13 @@ import logging
 #import pycurl
 import yt_dlp
 import details  # Import variables from details.py
+import ntplib
+from time import ctime
+
+c = ntplib.NTPClient()
+response = c.request('pool.ntp.org')
+print(ctime(response.tx_time))
+
 
 # Now you can access the variables as attributes of the details module
 api_id = int(details.api_id)
