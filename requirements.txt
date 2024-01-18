@@ -12,3 +12,4 @@ cryptg
 telethon
 python-decouple
 python-dotenv
+ntplib
