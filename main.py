@@ -1,3 +1,15 @@
+import ntplib
+from time import ctime
+
+def synchronize_time():
+    c = ntplib.NTPClient()
+    response = c.request('pool.ntp.org')
+    return response.tx_time
+
+# Call the function to synchronize time
+synchronized_time = synchronize_time()
+print(f"Synchronized Time: {ctime(synchronized_time)}")
+
 from pyrogram.errors.exceptions.bad_request_400 import StickerEmojiInvalid
 import requests
 import json
@@ -33,10 +45,6 @@ import yt_dlp
 import details  # Import variables from details.py
 import ntplib
 from time import ctime
-
-c = ntplib.NTPClient()
-response = c.request('pool.ntp.org')
-print(ctime(response.tx_time))
 
 
 # Now you can access the variables as attributes of the details module
