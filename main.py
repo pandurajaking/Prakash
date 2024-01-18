@@ -1,15 +1,4 @@
-import ntplib
-from time import ctime
-
-def synchronize_time():
-    c = ntplib.NTPClient()
-    response = c.request('pool.ntp.org')
-    return response.tx_time
-
-# Call the function to synchronize time
-synchronized_time = synchronize_time()
-print(f"Synchronized Time: {ctime(synchronized_time)}")
-
+from pyrogram import idle
 from pyrogram.errors.exceptions.bad_request_400 import StickerEmojiInvalid
 import requests
 import json
@@ -1167,4 +1156,6 @@ async def account_login(bot: Client, m: Message):
     await m.reply_text("Done") 
  
     
-bot.run()
+if __name__ == "__main__":
+    bot.start()
+    idle()
