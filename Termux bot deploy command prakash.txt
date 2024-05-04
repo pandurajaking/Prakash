@@ -1,5 +1,7 @@
 apt-get update
 apt-get upgrade
+pkg update && pkg upgrade -y
+
 pkg install curl
 pkg install rust
 rustc --version 
