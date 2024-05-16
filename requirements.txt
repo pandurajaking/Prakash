@@ -14,6 +14,7 @@ cryptg
 telethon
 python-decouple
 ntplib
+cloudscraper
 
 
 
