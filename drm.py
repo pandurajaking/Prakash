@@ -12,6 +12,7 @@ from aiofiles.os import remove
 from aiohttp import ClientSession
 from typing import  Union, List
 from logging import getLogger, FileHandler, StreamHandler, INFO, basicConfig
+import cloudscraper
 
 __version__ = "1.0"
 __author__ = "https://t.me/hiddenextractorbot"
@@ -57,15 +58,14 @@ class SERVICE(ABC):
         return ct.strftime("%d %b %Y - %I:%M%p")
 
     async def get_keys(self):
-        async with ClientSession(headers={"user-agent": "okhttp"}) as session:
-            async with session.post(self._remoteapi,
-                                    json={"link": self.mpd_link}) as resp:
-                if resp.status != 200:
-                    LOGGER.error(f"Invalid request: {await resp.text()}")
-                    return None
-                response = await resp.json(content_type=None)
-        self.mpd_link = response["MPD"]
-        return response["KEY_STRING"]
+        scraper = cloudscraper.create_scraper()
+        response = await scraper.post(self._remoteapi, json={"link": self.mpd_link})
+        if response.status != 200:
+            LOGGER.error(f"Invalid request: {await response.text()}")
+            return None
+        data = await response.json(content_type=None)
+        self.mpd_link = data["MPD"]
+        return data["KEY_STRING"]
 
 
 class Download(SERVICE):
