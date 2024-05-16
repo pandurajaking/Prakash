@@ -34,6 +34,8 @@ import yt_dlp
 import details  # Import variables from details.py
 import ntplib
 from time import ctime
+from io import BytesIO
+
 
 
 # Now you can access the variables as attributes of the details module
