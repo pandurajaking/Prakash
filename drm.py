@@ -59,13 +59,14 @@ class SERVICE(ABC):
 
     async def get_keys(self):
         scraper = cloudscraper.create_scraper()
-        response = await scraper.post(self._remoteapi, json={"link": self.mpd_link})
-        if response.status != 200:
-            LOGGER.error(f"Invalid request: {await response.text()}")
-            return None
-        data = await response.json(content_type=None)
-        self.mpd_link = data["MPD"]
-        return data["KEY_STRING"]
+        async with scraper.post(self._remoteapi, json={"link": self.mpd_link}) as response:
+            if response.status != 200:
+                LOGGER.error(f"Invalid request: {await response.text()}")
+                return None
+            data = await response.json(content_type=None)
+            self.mpd_link = data["MPD"]
+            return data["KEY_STRING"]
+
 
 
 class Download(SERVICE):
