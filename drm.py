@@ -13,6 +13,7 @@ from aiohttp import ClientSession
 from typing import  Union, List
 from logging import getLogger, FileHandler, StreamHandler, INFO, basicConfig
 import cloudscraper
+import requests
 
 __version__ = "1.0"
 __author__ = "https://t.me/hiddenextractorbot"
@@ -57,15 +58,15 @@ class SERVICE(ABC):
         ct = datetime.datetime.now(tz)
         return ct.strftime("%d %b %Y - %I:%M%p")
 
-    async def get_keys(self):
-        scraper = cloudscraper.create_scraper()
-        async with scraper.post(self._remoteapi, json={"link": self.mpd_link}) as response:
-            if response.status != 200:
-                LOGGER.error(f"Invalid request: {await response.text()}")
-                return None
-            data = await response.json(content_type=None)
-            self.mpd_link = data["MPD"]
-            return data["KEY_STRING"]
+    def get_keys(self):
+        headers = {"user-agent": "okhttp"}
+        response = requests.post(self._remoteapi, json={"link": self.mpd_link}, headers=headers)
+        if response.status_code != 200:
+            LOGGER.error(f"Invalid request: {response.text}")
+            return None
+        data = response.json()
+        self.mpd_link = data["MPD"]
+        return data["KEY_STRING"]
 
 
 
