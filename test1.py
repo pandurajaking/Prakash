@@ -1,14 +1,22 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import time
 
+# Chrome options for running on Heroku
 options = Options()
-options.headless = True  # Run Chrome in headless mode
-options.add_argument("--disable-gpu")  # Disables GPU hardware acceleration
-options.add_argument("--no-sandbox")  # Required for running on some systems
-options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+options.headless = True
+options.add_argument("--disable-gpu")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
 
-driver = webdriver.Chrome(options=options)
+# Specify the path to the ChromeDriver
+chrome_bin = os.environ.get("GOOGLE_CHROME_BIN", "chromedriver")
+chrome_driver_path = os.environ.get("CHROMEDRIVER_PATH", "/app/.chromedriver/bin/chromedriver")
+
+service = Service(executable_path=chrome_driver_path)
+
+driver = webdriver.Chrome(service=service, options=options)
 
 try:
     driver.get('https://app.magmail.eu.org/get_keys')
