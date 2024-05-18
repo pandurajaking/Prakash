@@ -4,7 +4,7 @@ resp = s.post('https://app.magmail.eu.org/get_keys', json={'link':'https://cpvod
 
 if resp.status_code == 200:
     headers = {
-        'Host': 'https://app.magmail.eu.org/get_keys',
+        'Host': 'app.magmail.eu.org',
         'user-agent': 'Mobile-Android',
         'device-id': 'c28d3cb16bbdac01',
         'device-details': 'Xiaomi_Redmi 7_SDK-32',
