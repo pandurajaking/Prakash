@@ -1,6 +1,8 @@
 import requests as s
 
-resp = s.post('https://app.magmail.eu.org/get_keys', json={'link':'https://cpvod.testbook.com/659ba2ba1ffd3734c48d6498/playlist.m3u8'})
+url = 'https://cpvod.testbook.com/659ba2ba1ffd3734c48d6498/playlist.m3u8'
+
+resp = s.post('https://app.magmail.eu.org/get_keys', json={'link': url})
 
 if resp.status_code == 200:
     headers = {
@@ -11,7 +13,7 @@ if resp.status_code == 200:
         'accept-encoding': 'gzip, deflate, br',
     }
 
-    params = (('url', f'{url}'), )
+    params = {'link': url}
 
     response = s.get('https://app.magmail.eu.org/get_keys', headers=headers, params=params)
     
