@@ -17,6 +17,7 @@ ntplib
 cloudscraper
 cryptg
 telethon
+selenium
 
 
 
