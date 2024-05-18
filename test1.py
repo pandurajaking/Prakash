@@ -2,7 +2,7 @@ import requests as s
 
 url = 'https://cpvod.testbook.com/659ba2ba1ffd3734c48d6498/playlist.m3u8'
 
-resp = s.post('https://app.magmail.eu.org/get_keys', json={'link': url})
+resp = s.get('https://app.magmail.eu.org/get_keys', json={'link': url})
 
 if resp.status_code == 200:
     headers = {
