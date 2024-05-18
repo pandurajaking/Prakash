@@ -21,7 +21,7 @@ headers = {
                 params = (('url', f'{url}'), )
 
                 response = requests.get(
-                    'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
+                    'https://app.magmail.eu.org/get_keys',
                     headers=headers,
                     params=params)
                 # print(response.json())
